@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Geocoding with Nominatim</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="" th:href="@{/styles.css}">
+</head>
+<body>
+
+    <h1>Geocoding with Nominatim</h1>
+ 
+    
+    <div>
+        <label for="searchTbx">Enter an address: </label>
+        <input id="searchTbx" type="text">
+        <button onclick="geocodeAddress()">Search</button>
+    </div>
+    
+    <div id="output"></div>
+
+    <script>
+    function geocodeAddress() {
+        var query = document.getElementById('searchTbx').value;
+        var url = `/geocode?query=${encodeURIComponent(query)}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                var outputDiv = document.getElementById('output');
+                outputDiv.innerHTML = '';
+
+                if (data && data.length > 0) {
+                    data.forEach(result => {
+                        var addressDiv = document.createElement('div');
+                        addressDiv.textContent = result.display_name;
+                        addressDiv.style.cursor = "pointer";
+                        addressDiv.addEventListener('click', function() {
+                            openAddressPage(result.display_name, result.lat, result.lon);
+                        });
+                        outputDiv.appendChild(addressDiv);
+                    });
+                } else {
+                    outputDiv.textContent = "Locations not found.";
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching location data:", error);
+            });
+    }
+    
+	 // Enable pressing Enter to perform the search
+	    document.getElementById('searchTbx').addEventListener('keydown', function(event) {
+	        if (event.key === 'Enter') {
+	            event.preventDefault(); // Prevent the default form submission
+	            geocodeAddress(); // Call the geocodeAddress function
+	        }
+	    });
+
+	    function openAddressPage(address, latitude, longitude) {
+	        const queryString = `?address=${encodeURIComponent(address)}&lat=${latitude}&lon=${longitude}`;
+	        window.open(`/details.html${queryString}`, "_blank");
+	    }
+    
+    
+    </script>
+</body>
+</html>

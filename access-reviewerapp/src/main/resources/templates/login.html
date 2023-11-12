@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="" th:href="@{/styles.css}">
+
+    <!--[if lt IE 9]>
+    <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+    <![endif]-->
+    <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <title>Login</title>
+</head>
+<body >
+    <div class="login">
+        <input id="close-menu" class="close-menu" type="checkbox" aria-label="Close menu" role="button">
+        <label class="close-menu-label" for="close-menu" title="close menu"></label>
+        <aside class="menu white-bg">
+            <div class="main-content menu-content">
+                <h1 onclick="getElementById('close-menu').checked=false">
+                    <!--<a href="#">LOGO</a>--><img href="#" src="image/logo.png" alt="">
+                </h1>
+                <nav>
+                    <ul onclick="getElementById('close-menu').checked=false">
+                        <li><a th:href="@{/index}">Home</a></li>
+                        <li><a th:href="@{/news}">News</a></li>
+                        <li><a th:href="@{/about}">About</a></li>
+                        <li><a th:href="@{/registration}">Login</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        
+
+
+        <div class="container-form signup">
+            <div class="information">
+                <div class="info-children">
+                    <h2>You're welcome</h2>
+                    <p>Get involved in our community. Join us!</p>
+                    <input type="button" value="Sign in" id="sign-in">
+                </div>
+            </div>
+            <div class="form-information">
+                <div class="form-information-children">
+                    <h2>Sign up</h2>
+                    <div class="icons">
+                        <i class='bx bxl-google'></i>
+                    </div>
+                    <p>or sign up with your email address</p>
+                        <div class="message" th:if="${message != null}">
+        					[[${message}]]
+        				</div>
+                    <form class="form" id="signup" 
+                    th:action="@{/registration}" 
+                    method="post" 
+                    role="form" 
+                    th:object="${user}">
+                        <label>
+                            <i class='bx bx-user-circle'></i>
+                            <input th:field="*{username}" type="text" placeholder="User name" id="username" required>
+                        </label>
+                        <label>
+                            <i class='bx bx-envelope' ></i>
+                            <input th:field="*{email}" type="email" placeholder="Email address" id="email" required>
+                        </label>
+                        <label>
+                            <i class='bx bx-lock-alt' ></i>
+                            <input th:field="*{password}" type="password" placeholder="Password" id="password" required>
+                        </label>
+                        <input type="submit" value="Sign Up">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-form signin hide">
+            <div class="information">
+                <div class="info-children">
+                    <h2>Nice to see you again !</h2>
+                    <p>Get involved in our community. Join us!</p>
+                    <input type="button" value="Sign up" id="sign-up">
+                </div>
+            </div>
+            <div class="form-information">
+                <div class="form-information-children">
+                    <h2>Sign in</h2>
+                    <div class="icons">
+                        <i class='bx bxl-google'></i>
+                    </div>
+                    <p>login details</p>
+                    <div class="message" th:if="${param.error}">
+                    	Invalid Username or Password
+                    </div>
+                     <div class="message" th:if="${param.logout}">
+                    	Logout Successfully
+                    </div>
+                    <form class="form" id ="signin" th:action="@{/login}" method="post">
+                        <label>
+                            <i class='bx bx-envelope' ></i>
+                            <input type="email" placeholder="Email address" id="username" name="username">
+                        </label>
+                        <label>
+                            <i class='bx bx-lock-alt' ></i>
+                            <input type="password" placeholder="Password" name="password" id="password">
+                        </label>
+                        <input type="submit" value="Sign in">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="madeby-footer" class="madeby-footer main-bg">
+        <p>
+            <a href="#privacy" >Privacy Statement</a>
+            <a href="#term" >Term & Conditions</a>
+            <a href="#policy" >Cookie Policy</a>
+            <a href="#rights" >© 2023, Access Reviewer. All rights reserved</a>
+        </p>
+    </footer>
+
+    <a class="back-to-top" href="#">➤</a>
+
+    <script src="" th:src="@{script.js}"></script>
+</body>
+
+</html>

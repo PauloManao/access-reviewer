@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Address Page</title>
+<link rel="stylesheet" href="" th:href="@{/styles.css}">
+</head>
+<body>
+	<h1>Address Details</h1>
+	
+	<div id="addressDetails">
+		<p id="addressText"></p>
+		<p id="weatherInfo">Weather Information: </p>
+	</div>
+	
+	<div id="ratingAverage">
+		<p id="writeReviewBtn">Write a review</p>
+	</div>
+	<div>
+		<h4>Previous Reviews:</h4>
+		<div id="previousreviews"></div>
+	</div>
+	<script>
+	
+		function fetchWeather(latitude, longitude, address) {
+			const apiUrl = `/weather?lat=${latitude}&lon=${longitude}`;
+			fetch(apiUrl)
+			.then(response => response.json())
+			.then(weatherData => {
+				const temperature = (weatherData.main.temp - 273.15).toFixed(2);
+				const weatherConditions = weatherData.weather[0].description;
+				const addressText = document.getElementById("addressText");
+				addressText.textContent = `Address: ${address}`;
+				const weatherInfo = document.getElementById("weatherInfo");
+				weatherInfo.textContent = `Temperature: ${temperature}°C, Conditions: ${weatherConditions}`;
+			})
+			.catch(error => {
+				console.error("Error fetching weather data:", error);
+			});
+		}
+		
+		// obtain latitude and longitude from Geocoding service and call fetchWeather
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+		const address = decodeURIComponent(urlParams.get("address"));
+		const latitude = parseFloat(urlParams.get("lat"));
+		const longitude = parseFloat(urlParams.get("lon"));
+		fetchWeather(latitude, longitude, address);
+		
+		// Function to navigate to the review page with the selected address
+		function navigateToReviewPage(address) {
+			window.location.href = `/review?address=${encodeURIComponent(address)}`;
+		}
+
+		document.getElementById("writeReviewBtn").addEventListener('click', function() {
+			const addressText = document.getElementById("addressText").textContent;
+			navigateToReviewPage(addressText);
+		});
+		
+		
+		//fetch reviews
+		function fetchReviews(address) {
+		    const apiUrl = `/comments?addressString=${encodeURIComponent(address)}`; // Corrected parameter name
+		    fetch(apiUrl)
+		        .then(response => {
+		            if (!response.ok && response.status === 204) {
+		                throw new Error('No reviews found for this address');
+		            }
+		            return response.json();
+		        })
+		        .then(reviews => {
+		            displayReviews(reviews);
+		        })
+		        .catch(error => {
+		            console.error("Error fetching reviews:", error);
+		            document.getElementById("previousreviews").textContent = "No reviews available for this address.";
+		        });
+		}
+
+		function displayReviews(reviews) {
+		    const reviewsContainer = document.getElementById("previousreviews");
+		    reviewsContainer.innerHTML = ""; // Clear previous reviews
+
+		    reviews.forEach(comment => {
+		        const reviewElement = document.createElement("div");
+		        reviewElement.classList.add('review');
+
+		        const commentsParagraph = document.createElement("p");
+		        commentsParagraph.textContent = comment; // Directly use the comment string
+		        reviewElement.appendChild(commentsParagraph);
+
+		        reviewsContainer.appendChild(reviewElement);
+		    });
+		}
+
+		// Call fetchReviews after fetching the weather, or when appropriate for your application
+		fetchWeather(latitude, longitude, address);
+		fetchReviews(address);
+
+	</script>
+	</body>
+</html>

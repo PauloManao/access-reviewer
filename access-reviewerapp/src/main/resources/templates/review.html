@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="" th:href="@{/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
+    <title>Review</title>
+</head>
+<body>
+      
+    <form class="review-form" action="/submit" method="POST" enctype="multipart/form-data">
+
+        <div id="addressDetails">
+            <p id="addressText" ></p>
+        </div>
+        
+        <input type="hidden" name="addressString" id="addressInput" />
+
+        <div class="criteria">
+
+            <div class="rating-box">       
+                <p>Rate your experience</p>
+                <div class="stars"> <!-- Fixed typo here -->
+                    <span class="fa-solid fa-star" data-value="1"></span>
+                    <span class="fa-solid fa-star" data-value="2"></span>
+                    <span class="fa-solid fa-star" data-value="3"></span>
+                    <span class="fa-solid fa-star" data-value="4"></span>
+                    <span class="fa-solid fa-star" data-value="5"></span>
+                </div>
+                <input type="hidden" name="rateExperience" value="0">
+            </div>
+
+            <div class="rating-box">       
+                <p>Entrance</p>
+                <div class="stars1"> <!-- Fixed typo here -->
+                    <span class="fa-solid fa-star" data-value="1"></span>
+                    <span class="fa-solid fa-star" data-value="2"></span>
+                    <span class="fa-solid fa-star" data-value="3"></span>
+                    <span class="fa-solid fa-star" data-value="4"></span>
+                    <span class="fa-solid fa-star" data-value="5"></span>
+                </div>
+                <input type="hidden" name="entrance" value="0">
+            </div>
+
+            <div class="rating-box">       
+                <p>Access to Goods and Services</p>
+                <div class="stars2"> <!-- Fixed typo here -->
+                    <span class="fa-solid fa-star" data-value="1"></span>
+                    <span class="fa-solid fa-star" data-value="2"></span>
+                    <span class="fa-solid fa-star" data-value="3"></span>
+                    <span class="fa-solid fa-star" data-value="4"></span>
+                    <span class="fa-solid fa-star" data-value="5"></span>
+                </div>
+                <input type="hidden" name="accessToServices" value="0">
+            </div>
+
+            <div class="rating-box">       
+                <p>Seats, Tables, and Counters</p>
+                <div class="stars3"> <!-- Fixed typo here -->
+                    <span class="fa-solid fa-star" data-value="1"></span>
+                    <span class="fa-solid fa-star" data-value="2"></span>
+                    <span class="fa-solid fa-star" data-value="3"></span>
+                    <span class="fa-solid fa-star" data-value="4"></span>
+                    <span class="fa-solid fa-star" data-value="5"></span>
+                </div>
+                <input type="hidden" name="seatsTablesCounters" value="0">
+            </div>
+
+            <div class="rating-box">       
+                <p>Rest Rooms</p>
+                <div class="stars4"> <!-- Fixed typo here -->
+                    <span class="fa-solid fa-star" data-value="1"></span>
+                    <span class="fa-solid fa-star" data-value="2"></span>
+                    <span class="fa-solid fa-star" data-value="3"></span>
+                    <span class="fa-solid fa-star" data-value="4"></span>
+                    <span class="fa-solid fa-star" data-value="5"></span>
+                </div>
+                <input type="hidden" name="restRooms" value="0">
+            </div>
+        </div>     
+
+        <div class="comments">
+        	<label>Write your review</label>
+            <textarea name="comments" id="textarea" cols="30" rows="10" placeholder="Minimum 20 characters"></textarea>
+        </div>
+
+        <div id="imageForm">
+            <input id="imageInput" type="file" name="images" accept="image/*" multiple>
+        </div>
+          
+
+        <div>
+            <button type="submit" class="review-submit">Submit</button>
+        </div>
+
+    </form>
+    <div>
+        <p id=message></p>
+    </div>
+
+    <script>
+ // Function to extract and format the address from the query parameter
+    function getAddressFromQueryParameter() {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        let address = urlParams.get("address");
+
+        // Check if the address starts with 'Address: ' and remove it
+        if (address && address.startsWith("Address: ")) {
+            address = address.substring(9); // 'Address: ' is 9 characters long
+        }
+
+        return address;
+    }
+	
+ // Display the formatted address from the query parameter
+    const address = getAddressFromQueryParameter();
+    if (address) {
+        const addressText = document.getElementById("addressText");
+        const addressInput = document.getElementById("addressInput");
+
+        // Set the address text and populate the hidden input
+        addressText.textContent = decodeURIComponent(address);
+        addressInput.value = decodeURIComponent(address);
+    }  
+    
+    </script>
+    <script src="" th:src="@{script.js}"></script>
+</body>
+</html>
+
