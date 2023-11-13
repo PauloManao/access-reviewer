@@ -34,7 +34,7 @@
                         <li><a th:href="@{/news}">News</a></li>
                         <li><a th:href="@{/about}">About</a></li>
                         <li><a th:href="@{/registration}">Login</a></li>
-                        <li><a th:if="${username}" th:text="${username}" th:href="@{/user-page}"></a></li>
+                        <li><a th:if="${username}" th:text="${username}" th:href="@{/account}"></a></li>
                     </ul>
                 </nav>
             </div>
@@ -42,7 +42,7 @@
         
 		<div class="login">
 
-        <div class="container-form signup">
+        <div class="container-form signup hide">
             <div class="information">
                 <div class="info-children">
                     <h2>You're welcome</h2>
@@ -83,7 +83,7 @@
             </div>
         </div>
 
-        <div class="container-form signin hide">
+        <div class="container-form signin ">
             <div class="information">
                 <div class="info-children">
                     <h2>Nice to see you again !</h2>

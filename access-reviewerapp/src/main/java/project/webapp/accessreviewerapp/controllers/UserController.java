@@ -1,9 +1,6 @@
 package project.webapp.accessreviewerapp.controllers;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +11,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import jakarta.servlet.http.HttpSession;
 import project.webapp.accessreviewerapp.dto.UserDto;
 import project.webapp.accessreviewerapp.service.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import java.util.Collection;
 
 @Controller
 public class UserController {
-	
+		
 	@Autowired
 	UserDetailsService userDetailsService;
 	
@@ -59,7 +57,7 @@ public class UserController {
 		model.addAttribute("user", userDetails);
 		return "index";
 	}
-	
+		
 	@GetMapping("admin-page")
 	public String adminPage (Model model, Principal principal) {
 		return "index";
@@ -71,8 +69,29 @@ public class UserController {
         return new ResponseEntity<>(principal != null, HttpStatus.OK);
     }
     
-    
+	//redirect the users to their personal page according to their roles when they click on their name 
+    @GetMapping("/account")
+    public String accountRedirect(Principal principal) {
+        if (principal instanceof Authentication) {
+            Authentication authentication = (Authentication) principal;
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
-    
+            boolean isAdmin = authorities.stream().anyMatch(a -> a.getAuthority().equals("admin"));
+            return isAdmin ? "redirect:/admin" : "redirect:/user";
+        }
+
+        return "redirect:/login"; // Redirect to login if no principal or not authenticated
+    }
+	
+	@GetMapping("admin")
+	public String admin (Model model, Principal principal) {
+		return "admin";
+	}
+	
+	@GetMapping("user")
+	public String user (Model model, Principal principal) {
+		return "user";
+	}
+       
 	
 }

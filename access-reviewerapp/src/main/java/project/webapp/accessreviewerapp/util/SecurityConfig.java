@@ -33,20 +33,27 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 		
 		http.csrf(c -> c.disable())
-		.authorizeHttpRequests(request -> request.requestMatchers("/admin-page")
-				.hasAuthority("admin").requestMatchers("/user-page").hasAuthority("user")
+		.authorizeHttpRequests(request -> request.requestMatchers("/admin-page", "/admin")
+				.hasAuthority("admin").requestMatchers("/user-page", "/user").hasAuthority("user")
 				.requestMatchers("/registration", "/styles.css", "/script.js", "/index", "/login", "/logout", 
 						"/image/**", "/news","/about","/details.html","/geocode","/save","/submit",
 						"/reviews/comments/address/{addressId}","/comments","/review","/weather",
-						"/api/isAuthenticated","/").permitAll() //REGISTRATION
+						"/api/isAuthenticated", "/").permitAll() //REGISTRATION
 				.anyRequest().authenticated())
 		
 		.formLogin(form -> form.loginPage("/login").loginProcessingUrl("/login")
 				.successHandler(customSucessHandler).permitAll())
 		
+        .formLogin(form -> form
+                .loginPage("/registration")
+                .loginProcessingUrl("/login")
+                .failureUrl("/registration?error") // Redirect to /login with error parameter
+                .successHandler(customSucessHandler)
+                .permitAll())
+		
 		.logout(form-> form.invalidateHttpSession(true).clearAuthentication(true)
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.logoutSuccessUrl("/login?logout").permitAll());
+				.logoutSuccessUrl("/registration?logout").permitAll());
 		
 		return http.build();
 		
