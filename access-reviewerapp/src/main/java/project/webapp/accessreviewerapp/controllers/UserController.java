@@ -1,6 +1,8 @@
 package project.webapp.accessreviewerapp.controllers;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import jakarta.servlet.http.HttpSession;
 import project.webapp.accessreviewerapp.dto.UserDto;
 import project.webapp.accessreviewerapp.service.UserService;
 
@@ -67,5 +70,9 @@ public class UserController {
     public ResponseEntity<Boolean> isAuthenticated(Principal principal) {
         return new ResponseEntity<>(principal != null, HttpStatus.OK);
     }
+    
+    
+
+    
 	
 }

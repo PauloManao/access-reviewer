@@ -7,6 +7,27 @@
 </head>
 <body>
 
+        <input id="close-menu" class="close-menu" type="checkbox" aria-label="Close menu" role="button">
+        <label class="close-menu-label" for="close-menu" title="close menu"></label>
+        <aside class="menu white-bg">
+            <div class="main-content menu-content">
+                <h1 onclick="getElementById('close-menu').checked=false">
+                    <!--<a href="#">LOGO</a>--><img href="#" src="image/logo.png" alt="">
+                </h1>
+                <nav>
+                    <ul onclick="getElementById('close-menu').checked=false">
+                        <li><a th:href="@{/index}">Home</a></li>
+                        <li><a th:href="@{/news}">News</a></li>
+                        <li><a th:href="@{/about}">About</a></li>
+                        <li><a th:href="@{/registration}">Login</a></li>
+                        <li><a th:if="${username}" th:text="${username}" th:href="@{/user-page}"></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        
+    <div class="menu-spacing"></div>
+
     <h1>Geocoding with Nominatim</h1>
  
     
@@ -17,6 +38,17 @@
     </div>
     
     <div id="output"></div>
+    
+ 	<footer id="madeby-footer" class="madeby-footer main-bg">
+	    <p>
+	        <a href="#privacy" >Privacy Statement</a>
+	        <a href="#term" >Term & Conditions</a>
+	        <a href="#policy" >Cookie Policy</a>
+	        <a href="#rights" >© 2023, Access Reviewer. All rights reserved</a>
+	    </p>
+    </footer>
+    
+        <a class="back-to-top" href="#">➤</a>
 
     <script>
     function geocodeAddress() {

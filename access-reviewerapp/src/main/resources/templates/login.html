@@ -20,7 +20,7 @@
     <title>Login</title>
 </head>
 <body >
-    <div class="login">
+    
         <input id="close-menu" class="close-menu" type="checkbox" aria-label="Close menu" role="button">
         <label class="close-menu-label" for="close-menu" title="close menu"></label>
         <aside class="menu white-bg">
@@ -34,12 +34,13 @@
                         <li><a th:href="@{/news}">News</a></li>
                         <li><a th:href="@{/about}">About</a></li>
                         <li><a th:href="@{/registration}">Login</a></li>
+                        <li><a th:if="${username}" th:text="${username}" th:href="@{/user-page}"></a></li>
                     </ul>
                 </nav>
             </div>
         </aside>
         
-
+		<div class="login">
 
         <div class="container-form signup">
             <div class="information">
