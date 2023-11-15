@@ -10,12 +10,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import project.webapp.accessreviewerapp.dto.UserDto;
+import project.webapp.accessreviewerapp.entities.User;
 import project.webapp.accessreviewerapp.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -92,6 +97,44 @@ public class UserController {
 	public String user (Model model, Principal principal) {
 		return "user";
 	}
+	
+	
+	@GetMapping("/admin/users")
+	public String listUsers(Model model) {
+	    List<UserDto> users = userService.findAll();
+	    model.addAttribute("users", users);
+	    return "admin_users";
+	}
+
+	@PostMapping("/admin/users")
+	public String addUser(@ModelAttribute("user") UserDto userDto, RedirectAttributes redirectAttributes) {
+	    User savedUser = userService.save(userDto);
+	    redirectAttributes.addFlashAttribute("adminMessage", "New user added successfully with ID: " + savedUser.getId());
+	    return "redirect:/admin/users";
+	}
+
+	@GetMapping("/admin/users/edit/{id}")
+	public String editUserForm(@PathVariable Long id, Model model) {
+	    UserDto userDto = userService.findById(id);
+	    System.out.println("User ID: " + userDto.getId()); // Explicitly log the ID
+	    model.addAttribute("user", userDto);	    
+	    return "admin_user_edit";
+	}
+
+	@PostMapping("/admin/users/update/{id}")
+	public String updateUser(@ModelAttribute("user") UserDto userDto, @PathVariable Long id, RedirectAttributes redirectAttributes) {
+	    userService.update(userDto, id);
+	    redirectAttributes.addFlashAttribute("adminMessage", "User updated successfully with ID: " + id);
+	    return "redirect:/admin/users";
+	}
+
+	@GetMapping("/admin/users/delete/{id}")
+	public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+	    userService.delete(id);
+	    redirectAttributes.addFlashAttribute("adminMessage", "User deleted successfully with ID: " + id);
+	    return "redirect:/admin/users";
+	}
+
        
 	
 }

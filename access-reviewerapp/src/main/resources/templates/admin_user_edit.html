@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+	    <meta charset="utf-8" >
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>Edit User</title>
+	    <link rel="stylesheet" href="" th:href="@{/styles.css}">
+	    <!--[if lt IE 9]>
+	    <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+	    <![endif]-->
+	    <!--[if lt IE 9]>
+	        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	        <![endif]-->
+	        <link rel="preconnect" href="https://fonts.googleapis.com">
+	        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+	</head>
+<body>
+
+	<h2>Edit User</h2>
+	
+	
+	
+	<!-- Edit User Form -->
+	<form th:action="@{/admin/users/update/{id}(id=${user.id})}" th:object="${user}" method="post">
+	    <input type="text" th:field="*{email}" placeholder="Email" required>
+	    <input type="password" th:field="*{password}" placeholder="Password" required>
+	    <input type="text" th:field="*{role}" placeholder="Role" required>
+	    <input type="text" th:field="*{username}" placeholder="Username" required>
+	    <button type="submit">Update User</button>
+	</form>
+
+</body>
+</html>

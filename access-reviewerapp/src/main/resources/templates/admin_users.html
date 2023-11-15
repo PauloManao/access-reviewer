@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+	    <meta charset="utf-8" >
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>User Management</title>
+	    <link rel="stylesheet" href="" th:href="@{/styles.css}">
+	    <!--[if lt IE 9]>
+	    <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+	    <![endif]-->
+	    <!--[if lt IE 9]>
+	        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	        <![endif]-->
+	        <link rel="preconnect" href="https://fonts.googleapis.com">
+	        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+	</head>
+	
+<body>
+
+	<h2>User Management</h2>
+	
+	<div class="admin-message" th:if="${adminMessage}" th:text="${adminMessage}"></div>
+	
+	<!-- Add User Form -->
+	<form action="/admin/users" method="post">
+	    <input type="text" name="email" placeholder="Email" required>
+	    <input type="password" name="password" placeholder="Password" required>
+	    <input type="text" name="role" placeholder="Role" required>
+	    <input type="text" name="username" placeholder="Username" required>
+	    <button type="submit">Add User</button>
+	</form>
+	
+	
+  	
+	<!-- List of Users -->
+	<table>
+	    <thead>
+	        <tr>
+	            <th>ID</th>
+	            <th>Email</th>
+	            <th>Role</th>
+	            <th>Username</th>
+	            <th>Actions</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr th:each="user : ${users}">
+	            <td th:text="${user.id}"></td>
+	            <td th:text="${user.email}"></td>
+	            <td th:text="${user.role}"></td>
+	            <td th:text="${user.username}"></td>
+	            <td>
+	                <a th:href="@{/admin/users/edit/{id}(id=${user.id})}">Edit</a>
+	                <a th:href="@{/admin/users/delete/{id}(id=${user.id})}" onclick="return confirm('Are you sure?')">Delete</a>
+	            </td>
+	        </tr>
+	    </tbody>
+	</table>
+
+
+</body>
+</html>

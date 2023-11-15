@@ -41,6 +41,8 @@
 	<div>Hello Admin, <span th:if="${username}" th:text="${username}" th:href="@{/user}"></span></div>
 	<h2>Welcome, </h2>
 	
+	<a th:href="@{/admin/users}">Users Management</a><br>
+	
 	   <span sec:authorize="isAuthenticated">
    		<a th:href="@{/logout}">
    			Logout

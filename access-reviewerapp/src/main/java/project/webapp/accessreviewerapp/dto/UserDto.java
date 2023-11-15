@@ -2,10 +2,19 @@ package project.webapp.accessreviewerapp.dto;
 
 public class UserDto {
 	
+	private Long id;
 	private String email;
 	private String password;
 	private String role;
 	private String username;
+	
+    public Long getId() {
+        return id;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
+    }
 	
 	public UserDto(String email, String password, String role, String username) {
 		super();
