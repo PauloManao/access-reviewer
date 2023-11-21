@@ -129,7 +129,6 @@ public class UserController {
 	@GetMapping("/admin/users/edit/{id}")
 	public String editUserForm(@PathVariable Long id, Model model) {
 	    UserDto userDto = userService.findById(id);
-	    System.out.println("User ID: " + userDto.getId()); // Explicitly log the ID
 	    model.addAttribute("user", userDto);	    
 	    return "admin_user_edit";
 	}

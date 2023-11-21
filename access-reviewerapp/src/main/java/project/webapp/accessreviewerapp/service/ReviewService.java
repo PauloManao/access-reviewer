@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.persistence.EntityNotFoundException;
 import project.webapp.accessreviewerapp.dto.ReviewDto;
-import project.webapp.accessreviewerapp.dto.UserDto;
 import project.webapp.accessreviewerapp.entities.Address;
 import project.webapp.accessreviewerapp.entities.Image;
 import project.webapp.accessreviewerapp.entities.Review;
@@ -135,7 +134,7 @@ public class ReviewService {
     //method  to update in the reviewer page
     public Review updateReview(Long id, ReviewDto reviewDto) {
         Review review = reviewRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Review not found with ID: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Review not found with ID: "));
 
         // Update the review details
         review.setRateExperience(reviewDto.getRateExperience());
@@ -144,6 +143,7 @@ public class ReviewService {
         review.setSeatsTablesCounters(reviewDto.getSeatsTablesCounters());
         review.setRestRooms(reviewDto.getRestRooms());
         review.setComments(reviewDto.getComments());
+       
 
         return reviewRepository.save(review);
     }
@@ -182,6 +182,14 @@ public class ReviewService {
         }).collect(Collectors.toList());
     }
     
+    
+    public ReviewDto findById(Long id) {
+        Review review = reviewRepository.findById(id).orElseThrow(() -> new RuntimeException("Review not found"));
+        ReviewDto reviewDto = new ReviewDto(review.getAccessToServices(), review.getSeatsTablesCounters(), review.getEntrance(),review.getRateExperience(),
+        		review.getRestRooms(),review.getComments());
+        reviewDto.setId(review.getId()); // Make sure this line is setting the ID
+        return reviewDto;
+    }
 
 
 }

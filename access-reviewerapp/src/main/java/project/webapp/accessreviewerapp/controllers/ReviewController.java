@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import project.webapp.accessreviewerapp.dto.ReviewDto;
+import project.webapp.accessreviewerapp.dto.UserDto;
 import project.webapp.accessreviewerapp.entities.Address;
 import project.webapp.accessreviewerapp.entities.Review;
 import project.webapp.accessreviewerapp.entities.User;
@@ -115,12 +116,18 @@ public class ReviewController {
     }
     
 
+	@GetMapping("/reviews_list/edit/{id}")
+	public String editReviewForm(@PathVariable Long id, Model model) {
+	    ReviewDto reviewDto = reviewService.findById(id);
+	    model.addAttribute("review", reviewDto);	    
+	    return "reviews_edit";
+	}
     
     //update reviews
     @PostMapping("/reviews_list/update/{id}")
     public String updateReview(@PathVariable Long id, @ModelAttribute ReviewDto reviewDto, RedirectAttributes redirectAttributes) {
         reviewService.updateReview(id, reviewDto);
-        redirectAttributes.addFlashAttribute("reviewerMessage", "Review updated successfully");
+        redirectAttributes.addFlashAttribute("reviewerMessage", "Review updated successfully with id: "+ id);
         return "redirect:/reviews_list";
     }
     

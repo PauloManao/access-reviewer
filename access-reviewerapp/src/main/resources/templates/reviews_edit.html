@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+	    <meta charset="utf-8" >
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>Reviews Edit</title>
+	    <link rel="stylesheet" href="" th:href="@{/styles.css}">
+	    <!--[if lt IE 9]>
+	    <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+	    <![endif]-->
+	    <!--[if lt IE 9]>
+	        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	        <![endif]-->
+	        <link rel="preconnect" href="https://fonts.googleapis.com">
+	        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+	</head>
+<body>
+
+	<h2>Reviews Edit</h2>
+	
+	<!-- Edit Review Form -->
+	<form th:action="@{/reviews_list/update/{id}(id=${review.id})}" th:object="${review}" method="post">
+	    <input type="text" th:field="*{rateExperience}" placeholder="rateExperience" required>
+	    <input type="text" th:field="*{entrance}" placeholder="entrance" required>
+	    <input type="text" th:field="*{accessToServices}" placeholder="accessToServices" required>
+	    <input type="text" th:field="*{seatsTablesCounters}" placeholder="seatsTablesCounters" required>
+	    <input type="text" th:field="*{restRooms}" placeholder="restRooms" required>
+	    <input type="text" th:field="*{comments}" placeholder="comments" required>
+	    <button type="submit">Update Review</button>
+	</form>
+
+</body>
+</html>

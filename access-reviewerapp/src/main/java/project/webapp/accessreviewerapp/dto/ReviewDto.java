@@ -24,6 +24,19 @@ public class ReviewDto {
 		return id;
 	}
 
+	public ReviewDto(int rateExperience, int entrance, int accessToServices,
+			int seatsTablesCounters, int restRooms, String comments) {
+		super();
+	
+		this.rateExperience = rateExperience;
+		this.entrance = entrance;
+		this.accessToServices = accessToServices;
+		this.seatsTablesCounters = seatsTablesCounters;
+		this.restRooms = restRooms;
+		this.comments = comments;
+
+	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
