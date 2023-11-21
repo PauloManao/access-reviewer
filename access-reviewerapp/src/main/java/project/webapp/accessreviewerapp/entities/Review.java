@@ -1,5 +1,6 @@
 package project.webapp.accessreviewerapp.entities;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,13 +48,23 @@ public class Review {
 
     private String comments;
     
+    private LocalDateTime submissionDate;
+    
+    public LocalDateTime getSubmissionDate() {
+        return submissionDate;
+    }
+
+    public void setSubmissionDate(LocalDateTime submissionDate) {
+        this.submissionDate = submissionDate;
+    }
+    
     public Review() {
         // No-arguments constructor needed by JPA
     }
     
 
 	public Review(Long id, Address address, int rateExperience, int entrance, int accessToServices,
-			int seatsTablesCounters, int restRooms, String comments) {
+			int seatsTablesCounters, int restRooms, String comments, User user, LocalDateTime submissionDate) {
 		super();
 		this.id = id;
 		this.address = address;
@@ -63,6 +74,8 @@ public class Review {
 		this.seatsTablesCounters = seatsTablesCounters;
 		this.restRooms = restRooms;
 		this.comments = comments;
+		this.user = user;
+		this.submissionDate = submissionDate;
 	}
 	
 	

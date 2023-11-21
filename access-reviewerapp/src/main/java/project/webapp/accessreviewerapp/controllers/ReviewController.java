@@ -7,6 +7,8 @@ import java.util.Optional; // Make sure to import Optional
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,9 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import project.webapp.accessreviewerapp.dto.ReviewDto;
 import project.webapp.accessreviewerapp.entities.Address;
@@ -26,7 +28,7 @@ import project.webapp.accessreviewerapp.repositories.AddressRepository;
 import project.webapp.accessreviewerapp.repositories.UserRepository;
 import project.webapp.accessreviewerapp.service.ReviewService;
 
-@RestController
+@Controller
 @RequestMapping
 public class ReviewController {
 	
@@ -42,7 +44,7 @@ public class ReviewController {
         this.userRepository = userRepository;
     }
     
-    // Endpoint to save a review (keep it for non-image reviews)
+    // Endpoint to save a review (for non-image reviews)
     @PostMapping("/save")
     public ResponseEntity<String> saveReview(@RequestBody Review review) {
         // Ensure the address exists in the database
@@ -86,7 +88,7 @@ public class ReviewController {
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
     
- // New endpoint to get comments by address string
+    //New endpoint to get comments by address string
     @GetMapping("/comments")
     public ResponseEntity<List<String>> getCommentsByAddressString(@RequestParam("addressString") String addressString) {
         Optional<Address> address = addressRepository.findByAddress(addressString);
@@ -102,6 +104,35 @@ public class ReviewController {
         }
         
         return new ResponseEntity<>(comments, HttpStatus.OK);
+    }
+    
+    //list reviews in the review page
+    @GetMapping("/reviews_list")
+    public String listReviews(Model model) {
+        List<ReviewDto> reviews = reviewService.findAll();
+        model.addAttribute("reviews_list", reviews);
+        return "reviews_list"; 
+    }
+    
+
+    
+    //update reviews
+    @PostMapping("/reviews_list/update/{id}")
+    public String updateReview(@PathVariable Long id, @ModelAttribute ReviewDto reviewDto, RedirectAttributes redirectAttributes) {
+        reviewService.updateReview(id, reviewDto);
+        redirectAttributes.addFlashAttribute("reviewerMessage", "Review updated successfully");
+        return "redirect:/reviews_list";
+    }
+    
+    //edit reviews
+
+    
+    //delete reviews
+    @GetMapping("/reviews_list/delete/{id}")
+    public String deleteReview(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        reviewService.deleteReview(id);
+        redirectAttributes.addFlashAttribute("reviewerMessage", "Review deleted successfully with ID: " + id);
+        return "redirect:/reviews_list";
     }
         
 }

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" >
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Reviews</title>
+        <link rel="stylesheet" href="" th:href="@{/styles.css}">
+        <!--[if lt IE 9]>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+        <![endif]-->
+        <!--[if lt IE 9]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+            <![endif]-->
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+	<h2>Review Management</h2>
+	
+	<div class="reviewer-message" th:if="${reviewerMessage}" th:text="${reviewerMessage}"></div>
+
+	<table>
+	    <thead>
+	        <tr>
+	            <th>ID</th>
+	            <th>AccessToServices</th>
+	            <th>Comments</th>	
+	            <th>Entrance</th>	                        
+	            <th>Experience</th>
+	            <th>RestRooms</th>        
+	            <th>SeatsTablesCounters</th>
+	            <th>Address ID</th>
+	            <th>User ID</th>
+	            <th>Submission Date</th>
+				<th>Actions</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr th:each="review : ${reviews_list}">
+	            <td th:text="${review.id}"></td>
+	            <td th:text="${review.accessToServices}"></td>
+	            <td th:text="${review.comments}"></td>	
+	            <td th:text="${review.entrance}"></td>
+	            <td th:text="${review.rateExperience}"></td>
+	            <td th:text="${review.restRooms}"></td>	            	            
+	            <td th:text="${review.seatsTablesCounters}"></td>	                        
+				<td th:text="${review.addressId}"></td>	
+				<td th:text="${review.userId}"></td>
+	            <td th:text="${review.submissionDate}"></td>
+	            <td>
+	                <a th:href="@{/reviews_list/edit/{id}(id=${review.id})}">Edit</a>
+	                <a th:href="@{/reviews_list/delete/{id}(id=${review.id})}" onclick="return confirm('Are you sure?')">Delete</a>
+	            </td>
+	        </tr>
+	    </tbody>
+	</table>
+
+
+</body>
+</html>

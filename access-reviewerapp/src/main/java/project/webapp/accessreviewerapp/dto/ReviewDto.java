@@ -1,5 +1,6 @@
 package project.webapp.accessreviewerapp.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -13,8 +14,42 @@ public class ReviewDto {
     private int restRooms;
     private String comments;
     private Long userId;
+    private LocalDateTime submissionDate;
+    private String address;
+    private List<MultipartFile> images;
+    private Long addressId;
+    private Long id;
     
-    public Long getUserId() {
+    public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(Long addressId) {
+        this.addressId = addressId;
+    }
+    
+	public ReviewDto() {
+		super();
+
+	}
+    
+    public LocalDateTime getSubmissionDate() {
+		return submissionDate;
+	}
+
+	public void setSubmissionDate(LocalDateTime submissionDate) {
+		this.submissionDate = submissionDate;
+	}
+
+	public Long getUserId() {
 		return userId;
 	}
 
@@ -22,7 +57,7 @@ public class ReviewDto {
 		this.userId = userId;
 	}
 
-	private List<MultipartFile> images;
+	
     
     public List<MultipartFile> getImages() {
         return images;
@@ -32,9 +67,7 @@ public class ReviewDto {
         this.images = images;
     }
     
-    private String address; // Assuming address is a String type
-
-    // ... other fields ...
+    
 
     // Getter for the address field
     public String getAddress() {

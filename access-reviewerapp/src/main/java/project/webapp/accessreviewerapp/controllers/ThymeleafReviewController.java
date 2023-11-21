@@ -11,7 +11,7 @@ public class ThymeleafReviewController {
 	
     @RequestMapping("/review")
     public String showReviewPage() {
-        return "review"; // Assuming "review" is the name of your Thymeleaf template
+        return "review"; 
     }
 
 }

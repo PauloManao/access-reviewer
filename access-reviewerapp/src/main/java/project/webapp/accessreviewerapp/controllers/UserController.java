@@ -82,7 +82,15 @@ public class UserController {
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
             boolean isAdmin = authorities.stream().anyMatch(a -> a.getAuthority().equals("admin"));
-            return isAdmin ? "redirect:/admin" : "redirect:/user";
+            boolean isReviewer = authorities.stream().anyMatch(a -> a.getAuthority().equals("reviewer"));
+
+            if (isAdmin) {
+                return "redirect:/admin";
+            } else if (isReviewer) {
+                return "redirect:/reviewer"; // Redirect to the reviewer page
+            } else {
+                return "redirect:/user"; // Default to user page for other roles
+            }
         }
 
         return "redirect:/login"; // Redirect to login if no principal or not authenticated
@@ -96,6 +104,11 @@ public class UserController {
 	@GetMapping("user")
 	public String user (Model model, Principal principal) {
 		return "user";
+	}
+	
+	@GetMapping("reviewer")
+	public String reviewer (Model model, Principal principal) {
+		return "reviewer";
 	}
 	
 	

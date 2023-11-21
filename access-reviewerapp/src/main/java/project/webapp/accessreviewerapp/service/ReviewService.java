@@ -1,6 +1,7 @@
 package project.webapp.accessreviewerapp.service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,7 +12,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.persistence.EntityNotFoundException;
 import project.webapp.accessreviewerapp.dto.ReviewDto;
+import project.webapp.accessreviewerapp.dto.UserDto;
 import project.webapp.accessreviewerapp.entities.Address;
 import project.webapp.accessreviewerapp.entities.Image;
 import project.webapp.accessreviewerapp.entities.Review;
@@ -52,8 +55,6 @@ public class ReviewService {
         User user = userRepository.findById(reviewDto.getUserId())
                                   .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         
-        
-        
     	
         // Logic to parse the address and potentially find existing or create new
         Address address = addressRepository.findByAddress(addressString)
@@ -65,7 +66,6 @@ public class ReviewService {
             });
         
  
-
         // Now you have an Address object with an ID, whether it was new or existing
         Review review = new Review();
         
@@ -78,6 +78,7 @@ public class ReviewService {
         review.setRestRooms(reviewDto.getRestRooms());
         review.setComments(reviewDto.getComments());
         review.setUser(user); // Set the user to the review
+        review.setSubmissionDate(LocalDateTime.now()); // Set current date and time
      
         
         // Save the review first to generate the ID for the review
@@ -129,5 +130,58 @@ public class ReviewService {
                       .map(Review::getComments)
                       .collect(Collectors.toList());
     }
+    
+    
+    //method  to update in the reviewer page
+    public Review updateReview(Long id, ReviewDto reviewDto) {
+        Review review = reviewRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Review not found with ID: " + id));
+
+        // Update the review details
+        review.setRateExperience(reviewDto.getRateExperience());
+        review.setEntrance(reviewDto.getEntrance());
+        review.setAccessToServices(reviewDto.getAccessToServices());
+        review.setSeatsTablesCounters(reviewDto.getSeatsTablesCounters());
+        review.setRestRooms(reviewDto.getRestRooms());
+        review.setComments(reviewDto.getComments());
+
+        return reviewRepository.save(review);
+    }
+    
+    
+    // method to delete review
+    public void deleteReview(Long id) {
+        reviewRepository.deleteById(id);
+    }
+    
+    
+    //method to list all reviews
+    
+    public List<ReviewDto> findAll() {
+        return reviewRepository.findAll().stream().map(review -> {
+            ReviewDto dto = new ReviewDto();
+            dto.setId(review.getId());
+            dto.setAccessToServices(review.getAccessToServices());
+            dto.setComments(review.getComments());
+            dto.setEntrance(review.getEntrance());
+            dto.setRateExperience(review.getRateExperience());
+            dto.setRestRooms(review.getRestRooms());
+            dto.setSeatsTablesCounters(review.getSeatsTablesCounters());
+            dto.setSubmissionDate(review.getSubmissionDate());
+
+            // Populate userId and addressId
+            if (review.getUser() != null) {
+                dto.setUserId(review.getUser().getId());
+            }
+            if (review.getAddress() != null) {
+                // Assuming getAddress() returns the Address entity and you want the ID
+                dto.setAddressId(review.getAddress().getId());
+            }
+
+            return dto;
+        }).collect(Collectors.toList());
+    }
+    
+
 
 }

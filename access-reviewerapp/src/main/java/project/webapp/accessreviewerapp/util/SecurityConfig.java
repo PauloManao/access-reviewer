@@ -35,7 +35,10 @@ public class SecurityConfig {
 		http.csrf(c -> c.disable())
 		.authorizeHttpRequests(request -> request.requestMatchers("/admin-page", "/admin", "admin_user_edit", 
 				"admin_users", "/admin/users", "/admin/users/edit/*", "/admin/users/update/*", "/admin/users/delete/*")
-				.hasAuthority("admin").requestMatchers("/user-page", "/user").hasAuthority("user")
+				.hasAuthority("admin")
+				.requestMatchers("/reviewer", "/reviews_list")
+				.hasAuthority("reviewer")
+				.requestMatchers("/user-page", "/user").hasAuthority("user")
 				.requestMatchers("/registration", "/styles.css", "/script.js", "/index", "/login", "/logout", 
 						"/image/**", "/news","/about","/details.html","/geocode","/save","/submit",
 						"/reviews/comments/address/{addressId}","/comments","/review","/weather",
