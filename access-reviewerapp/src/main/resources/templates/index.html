@@ -1,99 +1,207 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Geocoding with Nominatim</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="" th:href="@{/styles.css}">
-</head>
-<body>
-
-        <input id="close-menu" class="close-menu" type="checkbox" aria-label="Close menu" role="button">
-        <label class="close-menu-label" for="close-menu" title="close menu"></label>
-        <aside class="menu white-bg">
-            <div class="main-content menu-content">
-                <h1 onclick="getElementById('close-menu').checked=false">
-                    <!--<a href="#">LOGO</a>--><img href="#" src="image/logo.png" alt="">
-                </h1>
-                <nav>
-                    <ul onclick="getElementById('close-menu').checked=false">
-                        <li><a th:href="@{/index}">Home</a></li>
-                        <li><a th:href="@{/news}">News</a></li>
-                        <li><a th:href="@{/about}">About</a></li>
-                        <li><a th:href="@{/registration}">Login</a></li>
-                        <li><a th:if="${username}" th:text="${username}" th:href="@{/account}"></a></li>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Access Reviewer</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="" th:href="@{/image/favicon.ico}" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link rel="stylesheet" href="" th:href="@{/styles.css}">
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+            <div class="container">
+                <a class="navbar-brand" href="#page-top"><img th:src="@{/image/logo.png}" alt=""/></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars ms-1"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/index}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/news}">News</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/about}">About</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/registration}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" th:if="${username}" th:text="${username}" th:href="@{/account}"></a></li>
                     </ul>
-                </nav>
+                </div>
             </div>
-        </aside>
-        
-    <div class="menu-spacing"></div>
+        </nav>
+        <!-- Masthead-->
+        <header class="masthead">
+            <div class="container">
+                <div class="masthead-subheading">Welcome To Access Reviewer</div>
+                 
+                <div class="search-container">
+	                <div class="search-bar">
+		                <input id="searchTbx" type="text" placeholder="Restaurants, hotels, stores, etc">
+		                <button onclick="geocodeAddress()" type="submit"><img th:src="@{/image/search.png}" alt=""/></button>
+		                
+	                </div>
+	                
+                </div>
+                <div class="address-container">
+                	<div class="address-list" id="output"></div>
+                </div>
+                
+            </div>
+        </header>
+        <!-- Top-rated Places-->
+        <section class="page-section" id="top-rated">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">Top-Rated Places</h2>
+                    <h3 class="section-subheading text-muted">Discover the most reviewed places</h3>
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <a th:href="@{https://www.guinness-storehouse.com/en/home}" target="_blank">
+	                        <img th:src="@{/image/guinnessStoreHouse.jpg}" alt = "">
+	                    </a>
+                        <h4 class="my-3">Guinness Store House</h4>
+                        <p class="text-muted">Brewery experience telling the tale of Ireland's famous beer, with tastings and a rooftop bar.</p>
+                        
+                    </div>
+                    <div class="col-md-4">
+                        <a th:href="@{https://www.dublinzoo.ie}" target="_blank">
+	                        <img th:src="@{/image/dublinZoo.jpg}" alt = "">
+	                    </a>                        
+                        <h4 class="my-3">Dublin Zoo</h4>
+                        <p class="text-muted">Established and designed in 1830 by Decimus Burton, it opened the following year.
+                         Today it focuses on conservation projects, breeding programmes, and growing awareness for animals.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <a th:href="@{https://waxmuseumplus.ie}" target="_blank">
+	                        <img th:src="@{/image/waxMuseum.jpg}" alt = "">
+	                    </a>                         
+                        <h4 class="my-3">The National Wax Museum</h4>
+                        <p class="text-muted">Ireland’s first wax museum was set up in 1804 by the famous Madame Tussaud and has
+                         had many reincarnations since. It is now one of the most popular visitor attractions in Dublin.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <h1>Geocoding with Nominatim</h1>
- 
-    
-    <div>
-        <label for="searchTbx">Enter an address: </label>
-        <input id="searchTbx" type="text">
-        <button onclick="geocodeAddress()">Search</button>
-    </div>
-    
-    <div id="output"></div>
-    
- 	<footer id="madeby-footer" class="madeby-footer main-bg">
-	    <p>
-	        <a href="#privacy" >Privacy Statement</a>
-	        <a href="#term" >Term & Conditions</a>
-	        <a href="#policy" >Cookie Policy</a>
-	        <a href="#rights" >© 2023, Access Reviewer. All rights reserved</a>
-	    </p>
-    </footer>
-    
-        <a class="back-to-top" href="#">➤</a>
+        <!-- News-->
+        <section class="page-section bg-light" id="news">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">Accessibility</h2>
+                    <h3 class="section-subheading text-muted">Latest news</h3>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        <!-- News 1-->
+                        <div class="news-item">
+                            <a class="news-link" th:href="@{https://www.disability-federation.ie/news/2023/11/24/innovative-internship-programme-for-people-with-di-1/}" target="_blank">
+                                <img class="img-fluid"  th:src="@{/image/inovativeInternship.jpg}" alt = ""/>
+                            </a>
+                            <div class="news-caption">
+                                <div class="news-caption-subheading text-muted">
+                                	Innovative internship programme for people with disabilities celebrates 10 years
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        <!-- News 2-->
+                        <div class="news-item">
+                            <a class="news-link" th:href="@{https://www.euronews.com/next/2023/11/22/can-emerging-ai-strategies-protect-people-with-disabilities-and-other-vulnerable-groups}" target="_blank">
+                                <img class="img-fluid" th:src="@{/image/aiStrategies.jpg}" alt = ""/>
+                            </a>
+                            <div class="news-caption">
+                                <div class="news-caption-subheading text-muted">
+                                	Can emerging AI strategies protect people with disabilities and other vulnerable groups?
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        <!-- News 3-->
+                        <div class="news-item">
+                            <a class="news-link" th:href="@{https://www.cbsnews.com/news/airlines-mishandling-wheelchairs/}" target="_blank">
+                                <img class="img-fluid" th:src="@{/image/airTravel.jpg}" alt = ""/>
+                            </a>
+                            <div class="news-caption">
+                                <div class="news-caption-subheading text-muted">
+                                	Wheelchair users face frustrations in the air: "I've had so many terrible experiences"
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 mb-4 mb-lg-0">
+                        <!-- News 4-->
+                        <div class="news-item">
+                            <a class="news-link" th:href="@{https://www.consilium.europa.eu/en/infographics/disability-eu-facts-figures/}" target="_blank">
+                                <img class="img-fluid" th:src="@{/image/disabilityEurope.jpg}" alt = ""/>
+                            </a>
+                            <div class="news-caption">
+                                <div class="news-caption-subheading text-muted">Infographic - Disability in the EU: facts and figures</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 mb-4 mb-sm-0">
+                        <!-- News 5-->
+                        <div class="news-item">
+                            <a class="news-link" th:href="@{https://blogs.nvidia.com/blog/kabilan-kb-autonomous-wheelchair/}" target="_blank">
+                                <img class="img-fluid" th:src="@{/image/assistiveTech.jpg}" alt = ""/>
+                            </a>
+                            <div class="news-caption">
+                                <div class="news-caption-subheading text-muted">
+                               	 Meet the Maker: Robotics Student Rolls Out Autonomous Wheelchair With NVIDIA Jetson
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <!-- News 6-->
+                        <div class="news-item">
+                            <a class="news-link" th:href="@{https://www.forbes.com/sites/annefield/2023/11/22/disability-accelerator-initiative-targets-the-next-generation-of-radically-inclusive-technology/?sh=69f46811658c}" target="_blank">
+                                <img class="img-fluid" th:src="@{/image/assistTechAce.jpg}" alt = ""/>
+                            </a>
+                            <div class="news-caption">
+                                <div class="news-caption-subheading text-muted">
+                                	Initiative aims to support tech startups focused on people with disabilities
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+       
+        <!-- Footer-->
+        <footer class="footer py-4">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 text-lg-start">Copyright &copy; AccessReviewer 2023</div>
+                    <div class="col-lg-4 my-3 my-lg-0">
+                        <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <a class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
+                        <a class="link-dark text-decoration-none" href="#!">Terms of Use</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+      
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+      
+        <script src="" th:src="@{script.js}"></script>
 
-    <script>
-    function geocodeAddress() {
-        var query = document.getElementById('searchTbx').value;
-        var url = `/geocode?query=${encodeURIComponent(query)}`;
 
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                var outputDiv = document.getElementById('output');
-                outputDiv.innerHTML = '';
-
-                if (data && data.length > 0) {
-                    data.forEach(result => {
-                        var addressDiv = document.createElement('div');
-                        addressDiv.textContent = result.display_name;
-                        addressDiv.style.cursor = "pointer";
-                        addressDiv.addEventListener('click', function() {
-                            openAddressPage(result.display_name, result.lat, result.lon);
-                        });
-                        outputDiv.appendChild(addressDiv);
-                    });
-                } else {
-                    outputDiv.textContent = "Locations not found.";
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching location data:", error);
-            });
-    }
-    
-	 // Enable pressing Enter to perform the search
-	    document.getElementById('searchTbx').addEventListener('keydown', function(event) {
-	        if (event.key === 'Enter') {
-	            event.preventDefault(); // Prevent the default form submission
-	            geocodeAddress(); // Call the geocodeAddress function
-	        }
-	    });
-
-	    function openAddressPage(address, latitude, longitude) {
-	        const queryString = `?address=${encodeURIComponent(address)}&lat=${latitude}&lon=${longitude}`;
-	        window.open(`/details.html${queryString}`, "_blank");
-	    }
-    
-    
-    </script>
-</body>
+    </body>
 </html>

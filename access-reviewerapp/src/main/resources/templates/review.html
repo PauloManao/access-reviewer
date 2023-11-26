@@ -120,33 +120,7 @@
         <p id=message></p>
     </div>
 
-    <script>
- // Function to extract and format the address from the query parameter
-    function getAddressFromQueryParameter() {
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        let address = urlParams.get("address");
-
-        // Check if the address starts with 'Address: ' and remove it
-        if (address && address.startsWith("Address: ")) {
-            address = address.substring(9); // 'Address: ' is 9 characters long
-        }
-
-        return address;
-    }
-	
- // Display the formatted address from the query parameter
-    const address = getAddressFromQueryParameter();
-    if (address) {
-        const addressText = document.getElementById("addressText");
-        const addressInput = document.getElementById("addressInput");
-
-        // Set the address text and populate the hidden input
-        addressText.textContent = decodeURIComponent(address);
-        addressInput.value = decodeURIComponent(address);
-    }  
-    
-    </script>
+  
     <script src="" th:src="@{script.js}"></script>
 </body>
 </html>
