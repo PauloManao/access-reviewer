@@ -1281,7 +1281,11 @@ progress {
   }
   .col-lg-4 {
     flex: 0 0 auto;
-    width: 33.33333333%;
+    width: 33.33333%;
+  }
+  .col-lg-4-about {
+    flex: 0 0 auto;
+    width: 100%;
   }
   .col-lg-5 {
     flex: 0 0 auto;
@@ -10722,6 +10726,13 @@ p {
     height: 2rem;
     transition: height 0.3s ease-in-out;
   }
+  
+  #mainNav.navbar-about {
+	background-color: #212529;
+	padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  
   #mainNav.navbar-shrink {
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -11067,6 +11078,7 @@ header.masthead .masthead-subheading {
 .team-member {
   margin-bottom: 3rem;
   text-align: center;
+  align-items: center;
 }
 .team-member img {
   width: 14rem;
@@ -11418,6 +11430,307 @@ main a:hover{
   margin-right: 10px;
 }
 
+/*-------------------------CSS for review page------------------------*/
+
+.review-container{
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #f9f9f9; /* Optional */
+    border-radius: 10px;
+}
+
+.review-form{
+	margin-top:90px;
+	display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.rating-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+
+.stars-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.rating-box h5 {
+    margin-bottom: 10px;
+    font-weight: bold;
+    
+}
+
+.stars {
+    margin-right: 10px; /* Adjust as needed */
+}
+
+.stars span {
+    cursor: pointer;
+    color: #ccc;
+    margin-right: 5px;
+    font-size: 25px;
+    transition: #dadada 0.2s ease;
+}
+
+
+.stars span.active, .stars span.hover {
+    color: gold;
+}
+
+.rating-label {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 10px;
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+    white-space: nowrap; /* Prevents the label from breaking into multiple lines */
+}
+
+/* Textarea and Submit Button Styles */
+.comments textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+}
+
+.comments ::placeholder {
+  color: gray;
+  opacity: 1; /* Firefox */
+}
+
+.comments ::-ms-input-placeholder { /* Edge 12 -18 */
+  color: gray;
+}
+
+.review-submit {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.review-submit:hover {
+    background-color: #004494;
+}
+
+
+
+
+/*-------------------------CSS for reviews_edit and admin_user_edit------------------------*/
+.edit-review, .edit-user{
+	max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #f4f4f4;
+    border-radius: 8px;
+}
+
+.edit-review form input[type=text], 
+.edit-review form input[type=password],
+.edit-user form input[type=text], 
+.edit-user form input[type=password] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.edit-review form button[type=submit],
+.edit-user form button[type=submit] {
+    width: 100%;
+    padding: 10px;
+    background: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-review form button[type=submit]:hover,
+.edit-user form button[type=submit]:hover {
+    background: #004494;
+}
+
+/*-------------------------CSS for ADMIN_USERS and REVIEWS_LIST------------------------*/
+
+.admin-container{
+	
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color:#FEF9F8;
+    flex-direction: column;
+    min-height: 100vh;	
+}
+
+.admin-top{
+	margin-top:90px;
+}
+
+.admin-message, .reviewer-message{
+	color:blue;
+}
+
+
+.users-table{
+	margin-top:30px;
+	margin-bottom:30px;
+	width:85%;
+	height:1500px;
+	overflow-y: scroll;
+	display:flex;
+	justify-content: center;
+	background-color:#F5F2F2;
+	text-align: center;
+}
+
+.users-table table{
+	width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.users-table table, th, td {
+    border: 1px solid #ddd;
+}
+
+td.comments, th.comments {
+    max-width: 150px; 
+    word-wrap: break-word;
+}
+
+.users-table th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+.users-table th {
+    background-color: #DCDBDA;
+}
+
+.users-table tr:nth-child(even) {
+    background-color: #DCDBDA;
+}
+
+.users-table a {
+    
+    text-decoration: none;
+}
+
+.users-table .edit {
+    color: #007bff;
+	padding-right: 15px;
+}
+.users-table .delete {
+    color: red;
+
+}
+
+.users-table a:hover {
+    text-decoration: underline;
+}
+
+.add-user form {
+	justify-content:center;
+    max-width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    background: #F5F2F2;
+    border-radius: 8px;
+  
+}
+
+.add-user form input[type=text], 
+.add-user form input[type=password] {
+    width: 220px;;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.add-user form button[type=submit] {
+    
+    padding: 10px;
+    background: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add-user form button[type=submit]:hover {
+    background: #004494;
+}
+
+.add-user ::placeholder {
+  color: gray;
+  opacity: 1; /* Firefox */
+}
+
+.add-user ::-ms-input-placeholder { /* Edge 12 -18 */
+  color: gray;
+}
+
+/*-------------------------CSS for user pages-------------------------------*/
+
+.user-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-image: url('image/login.png');
+    background-size: cover;
+    flex-direction: column;
+    min-height: 100vh;	
+}
+
+.user-page{
+	margin-top:50px;
+	padding-top:10%;
+	display: block;
+    align-items: center;
+    justify-content: center;
+    min-width: 360px;
+    height:500px;
+    text-align: center;
+    border-radius:20px;
+   	background: rgba(255, 255, 255, 0.8);
+ 	backdrop-filter: blur(4px) sature(180%);	
+}
+
+.user-link {	
+	color: black;
+	font-size: 20px;
+}
+
+.user-options{
+	margin-top:40px;
+}
+
+.user-page a:link{
+	text-decoration: none;
+}
+
+
+
+
 
 /*-------------------------CSS for Details page-------------------------------*/
 
@@ -11582,25 +11895,6 @@ main a:hover{
     transform: translateY(-300%);
 }
 
-
-
-
-
-/*-------------------------CSS for Review page----coding lab----------*/
-
-.stars span, .stars1 span, .stars2 span, .stars3 span, .stars4 span {
-    color: #e6e6e6;
-    font-size: 25px;
-    cursor: pointer;
-    transition: #dadada 0.2s ease;
-}
-
-.stars span.active, .stars1 span.active, .stars2 span.active, .stars3 span.active, .stars4 span.active{
-    color: #ff9c1a;
-}
-
-
-
 /*----------------------------Medias-----------------------------------*/
 
 
@@ -11666,12 +11960,6 @@ main a:hover{
     }
 
 }
-
-
-
-
-
-
 
 
 

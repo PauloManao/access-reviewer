@@ -13,6 +13,7 @@
             document.querySelector('.search-bar').style.borderBottomStyle = 'solid';
             document.querySelector('.search-bar').style.borderBottomWidth = '0.5px';
             document.querySelector('.address-list').style.borderTopLeftRadius = '0';
+            document.querySelector('.address-list').style.borderTopRightRadius = '0';
         	
             var query = document.getElementById('searchTbx').value;
             var url = `/geocode?query=${encodeURIComponent(query)}`;
@@ -147,22 +148,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Star rating functionality
     const starContainers = document.querySelectorAll(".rating-box [class^='stars']");
-    starContainers.forEach(container => {
-        const stars = container.querySelectorAll("span");
-        const hiddenInput = container.nextElementSibling; // Get the hidden input field
-
-        stars.forEach((star, index) => {
-            star.addEventListener("click", () => {
-                // Update the hidden input value when a star is clicked
-                hiddenInput.value = index + 1;
-
-                // Loop through the stars again to set the "active" class
-                stars.forEach((s, starIndex) => {
-                    s.classList.toggle("active", starIndex <= index);
-                });
-            });
-        });
-    });
+	const ratingLabels = ["Terrible", "Poor", "Average", "Very good", "Excellent"]; // Updated variable name
+	
+	starContainers.forEach(container => {
+	    const stars = container.querySelectorAll("span");
+	    const hiddenInput = container.parentNode.querySelector("input[type='hidden']");
+	    const ratingLabel = container.parentNode.querySelector(".rating-label");
+	
+	    stars.forEach((star, index) => {
+	        star.addEventListener("click", () => {
+	            hiddenInput.value = index + 1;
+	            ratingLabel.textContent = ratingLabels[index]; // Use ratingLabels here
+	            stars.forEach((s, starIndex) => {
+	                s.classList.toggle("active", starIndex <= index);
+	            });
+	        });
+	
+	        star.addEventListener("mouseover", () => {
+	            ratingLabel.textContent = ratingLabels[index]; // Use ratingLabels here
+	            stars.forEach((s, starIndex) => {
+	                s.classList.toggle("hover", starIndex <= index);
+	            });
+	        });
+	
+	        star.addEventListener("mouseout", () => {
+	            stars.forEach(s => {
+	                s.classList.remove("hover");
+	            });
+	            // Reset the label text based on the hidden input's value
+	            ratingLabel.textContent = hiddenInput.value > 0 ? ratingLabels[hiddenInput.value - 1] : '';
+	        });
+	    });
+	});
 
     // Form submission logic
     var reviewForm = document.querySelector('.review-form');
