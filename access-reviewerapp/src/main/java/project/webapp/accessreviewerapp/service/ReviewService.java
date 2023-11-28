@@ -123,10 +123,16 @@ public class ReviewService {
     
     
     // Method to get all comments by address ID
-    public List<String> getCommentsByAddressId(Long addressId) {
+    public List<ReviewDto> getCommentsByAddressId(Long addressId) {
         List<Review> reviews = reviewRepository.findByAddressId(addressId);
         return reviews.stream()
-                      .map(Review::getComments)
+                      .map(review -> {
+                          ReviewDto dto = new ReviewDto();
+                          dto.setComments(review.getComments());
+                          dto.setUsername(review.getUser().getUsername()); // Set the username
+                          // Set other fields if necessary
+                          return dto;
+                      })
                       .collect(Collectors.toList());
     }
     

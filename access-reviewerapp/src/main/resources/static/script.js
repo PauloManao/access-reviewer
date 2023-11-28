@@ -117,6 +117,100 @@ if(btnTimes){
 
 
 /* 
+    Location Details page
+*/
+
+document.addEventListener('DOMContentLoaded', function() {
+
+// Function to fetch weather data
+		function fetchWeather(latitude, longitude, address) {
+			const apiUrl = `/weather?lat=${latitude}&lon=${longitude}`;
+			fetch(apiUrl)
+			.then(response => response.json())
+			.then(weatherData => {
+				const temperature = (weatherData.main.temp - 273.15).toFixed(2);
+				const weatherConditions = weatherData.weather[0].description;
+				const addressText = document.getElementById("addressText");
+				addressText.textContent = `Address: ${address}`;
+				const weatherInfo = document.getElementById("weatherInfo");
+				weatherInfo.textContent = `Temperature: ${temperature}°C, Conditions: ${weatherConditions}`;
+			})
+			.catch(error => {
+				console.error("Error fetching weather data:", error);
+			});
+		}
+		
+		// Function to navigate to the review page with the selected address
+		function navigateToReviewPage(address) {
+			window.location.href = `/review?address=${encodeURIComponent(address)}`;
+		}
+		
+				//fetch reviews
+		function fetchReviews(address) {
+		    const apiUrl = `/comments?addressString=${encodeURIComponent(address)}`; // Corrected parameter name
+		    fetch(apiUrl)
+		        .then(response => {
+		            if (!response.ok && response.status === 204) {
+		                throw new Error('No reviews found for this address');
+		            }
+		            return response.json();
+		        })
+		        .then(reviews => {
+		            displayReviews(reviews);
+		        })
+		        .catch(error => {
+		            console.error("Error fetching reviews:", error);
+		            document.getElementById("previousreviews").textContent = "No reviews available for this address.";
+		        });
+		}
+		
+		 // Function to display reviews
+		 
+function displayReviews(reviews) {
+    const reviewsContainer = document.getElementById("previousreviews");
+    reviewsContainer.innerHTML = ""; // Clear previous reviews
+
+    reviews.forEach(reviewDto => {
+        const reviewElement = document.createElement("div");
+        reviewElement.classList.add('review');
+
+        const commentsParagraph = document.createElement("p");
+        commentsParagraph.textContent = reviewDto.comments;
+
+        const userSpan = document.createElement("span");
+        userSpan.textContent = ` by ${reviewDto.username}`; // Display username
+        commentsParagraph.appendChild(userSpan);
+
+        reviewElement.appendChild(commentsParagraph);
+        reviewsContainer.appendChild(reviewElement);
+    });
+}
+		
+		// Event listener for 'Write a Review' button
+				document.getElementById("writeReviewBtn").addEventListener('click', function() {
+			const addressText = document.getElementById("addressText").textContent;
+			navigateToReviewPage(addressText);
+		});
+		
+		// Extract and use query parameters for weather and reviews fetching
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+		const address = decodeURIComponent(urlParams.get("address"));
+		const latitude = parseFloat(urlParams.get("lat"));
+		const longitude = parseFloat(urlParams.get("lon"));
+		
+		    if (address && !isNaN(latitude) && !isNaN(longitude)) {
+        fetchWeather(latitude, longitude, address);
+        fetchReviews(address);
+    }
+		
+
+});
+
+
+
+
+/* 
     Review page
 */
 

@@ -21,7 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import project.webapp.accessreviewerapp.dto.ReviewDto;
-import project.webapp.accessreviewerapp.dto.UserDto;
+
 import project.webapp.accessreviewerapp.entities.Address;
 import project.webapp.accessreviewerapp.entities.Review;
 import project.webapp.accessreviewerapp.entities.User;
@@ -83,22 +83,15 @@ public class ReviewController {
     
     //check the comments in database to display them in the details page
     // Endpoint to get comments by address ID
-    @GetMapping("/reviews/comments/address/{addressId}")
-    public ResponseEntity<List<String>> getCommentsByAddress(@PathVariable Long addressId) {
-        List<String> comments = reviewService.getCommentsByAddressId(addressId);
-        return new ResponseEntity<>(comments, HttpStatus.OK);
-    }
-    
-    //New endpoint to get comments by address string
     @GetMapping("/comments")
-    public ResponseEntity<List<String>> getCommentsByAddressString(@RequestParam("addressString") String addressString) {
+    public ResponseEntity<List<ReviewDto>> getCommentsByAddressString(@RequestParam("addressString") String addressString) {
         Optional<Address> address = addressRepository.findByAddress(addressString);
-               
+                
         if (!address.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Address not found");
         }
         
-        List<String> comments = reviewService.getCommentsByAddressId(address.get().getId());
+        List<ReviewDto> comments = reviewService.getCommentsByAddressId(address.get().getId());
         
         if (comments.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
