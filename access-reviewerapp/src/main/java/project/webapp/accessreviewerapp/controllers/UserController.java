@@ -42,10 +42,16 @@ public class UserController {
 	@PostMapping("/registration")
 	public String saveUser(@ModelAttribute("user") UserDto userDto, Model model) {
 		
+		//check if the email address is already in use
+        if (userService.emailExists(userDto.getEmail())) {
+            model.addAttribute("message", "Email address already in use");
+            model.addAttribute("stayOnSignup", true); 
+            return "login"; // Assuming 'login' is the registration page
+        }
 		// Set the user's role to "user" before saving
 		userDto.setRole("user");
 		userService.save(userDto);
-		model.addAttribute("message", "Registered Successfuly");
+		model.addAttribute("message", "Registered Successfully");
 		
 		return "login";
 	}

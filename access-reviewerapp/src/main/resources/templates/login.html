@@ -28,9 +28,8 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
                         <li class="nav-item"><a class="nav-link" th:href="@{/index}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{/news}">News</a></li>
                         <li class="nav-item"><a class="nav-link" th:href="@{/about}">About</a></li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{/registration}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/registration}">Login</a></li>
                         <li class="nav-item"><a class="nav-link" th:if="${username}" th:text="${username}" th:href="@{/account}"></a></li>
                     </ul>
                 </div>
@@ -54,6 +53,7 @@
                         <div class="message" th:if="${message != null}">
         					[[${message}]]
         				</div>
+        				<input type="hidden" id="stay-on-signup" th:value="${stayOnSignup}" />
                     <form class="form" id="signup" 
                     th:action="@{/registration}" 
                     method="post" 
@@ -89,6 +89,9 @@
                 <div class="form-information-children">
                     <h2>Sign in</h2>
                     <p>login details</p>
+                       <div class="message" th:if="${message != null}">
+        					[[${message}]]
+        				</div>
                     <div class="message" th:if="${param.error}">
                     	Invalid Username or Password
                     </div>

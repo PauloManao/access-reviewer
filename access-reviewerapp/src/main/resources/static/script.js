@@ -66,7 +66,13 @@
 /* 
     login page
 */
-
+window.onload = function() {
+    const stayOnSignup = document.getElementById("stay-on-signup").value;
+    if (stayOnSignup === 'true') {
+        formSignIn.classList.add("hide");
+        formSignUp.classList.remove("hide");
+    }
+};
 const btnSignIn = document.getElementById("sign-in");
 const btnSignUp = document.getElementById("sign-up");
 const formSignUp = document.querySelector(".signup");

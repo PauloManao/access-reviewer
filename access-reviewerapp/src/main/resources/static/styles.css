@@ -11846,7 +11846,7 @@ td.comments, th.comments {
     display: flex;
     align-items: center;
     text-align: center;
-    background-color: #f7eaf3;
+    background-color: #F5F6F8;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
 }
@@ -11867,7 +11867,7 @@ td.comments, th.comments {
 }
 
 .info-children input{
-    background-color: #f4c5f4;
+    background-color: #F0F2FD;
     outline: none;
     border: solid 2px #260026;
     border-radius: 20px;
@@ -11889,7 +11889,7 @@ td.comments, th.comments {
     justify-content: center;
     width: 60%;
     text-align: center;
-    background-color: #f4c5f4;
+    background-color: rgba(255, 255, 255, 0.8);
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
 }
@@ -11934,6 +11934,7 @@ td.comments, th.comments {
     padding: 0 10px;
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
+    
 }
 
 .form label input{
@@ -11950,8 +11951,17 @@ td.comments, th.comments {
     color: #a7a7a7;
 }
 
+.form ::placeholder {
+  color: gray;
+  opacity: 1; /* Firefox */
+}
+
+.form ::-ms-input-placeholder { /* Edge 12 -18 */
+  color: gray;
+}
+
 .form input[type="submit"]{
-    background-color: #f7eaf3;
+    background-color: #F0F2FD;
     border-radius: 20px;
     padding: 10px 15px;
     cursor: pointer;

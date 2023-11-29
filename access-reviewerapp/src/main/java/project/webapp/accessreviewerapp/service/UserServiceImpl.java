@@ -68,5 +68,10 @@ public class UserServiceImpl implements UserService{
         userDto.setId(user.getId()); // Make sure this line is setting the ID
         return userDto;
     }
+    
+    @Override
+    public boolean emailExists(String email) {
+        return userRepository.findByEmail(email) != null;
+    }
 
 }
