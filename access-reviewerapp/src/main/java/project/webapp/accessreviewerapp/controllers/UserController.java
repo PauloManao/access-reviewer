@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import project.webapp.accessreviewerapp.dto.UserDto;
 import project.webapp.accessreviewerapp.entities.User;
+import project.webapp.accessreviewerapp.service.PasswordValidator;
 import project.webapp.accessreviewerapp.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -42,15 +43,27 @@ public class UserController {
 	@PostMapping("/registration")
 	public String saveUser(@ModelAttribute("user") UserDto userDto, Model model) {
 		
+		//check if the password is meets the criteria
+	    List<String> passwordValidationErrors = PasswordValidator.validatePassword(userDto.getPassword());
+
+	    if (!passwordValidationErrors.isEmpty()) {
+	        model.addAttribute("user", new UserDto());
+	        model.addAttribute("passwordErrors", passwordValidationErrors); // Send the list of errors
+	        model.addAttribute("stayOnSignup", true); 
+	        return "login"; // Assuming 'login' is the registration page
+	    }
+		
 		//check if the email address is already in use
         if (userService.emailExists(userDto.getEmail())) {
-            model.addAttribute("message", "Email address already in use");
+        	model.addAttribute("user", new UserDto()); // Add this line
+            model.addAttribute("emailInUse", "Email address already in use");
             model.addAttribute("stayOnSignup", true); 
             return "login"; // Assuming 'login' is the registration page
         }
 		// Set the user's role to "user" before saving
 		userDto.setRole("user");
 		userService.save(userDto);
+		model.addAttribute("user", new UserDto()); // Add this line
 		model.addAttribute("message", "Registered Successfully");
 		
 		return "login";
@@ -58,8 +71,9 @@ public class UserController {
 	
 	
 	@GetMapping("/login")
-	public String login() {
-		return "login";
+	public String login(Model model) {
+	    model.addAttribute("user", new UserDto()); 
+	    return "login";
 	}
 		
 	@GetMapping("user-page")
@@ -153,6 +167,20 @@ public class UserController {
 	    return "redirect:/admin/users";
 	}
 
+    @PostMapping("/admin/users/enable/{id}")
+    public String enableUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        userService.toggleEnabled(id);
+        redirectAttributes.addFlashAttribute("adminMessage", "User enabled successfully with ID: " + id);
+        return "redirect:/admin/users";
+    }
+
+    @PostMapping("/admin/users/disable/{id}")
+    public String disableUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        userService.toggleEnabled(id);
+        redirectAttributes.addFlashAttribute("adminMessage", "User disabled successfully with ID: " + id);
+        return "redirect:/admin/users";
+    }
+	
        
 	
 }

@@ -40,16 +40,6 @@
 			<h2>User Management</h2>		
 			<div class="admin-message" th:if="${adminMessage}" th:text="${adminMessage}"></div>
 		</div>
-		<!-- Add User Form -->
-		<div class= "add-user">
-			<form  action="/admin/users" method="post">
-			    <input type="text" name="email" placeholder="Email" required>
-			    <input type="password" name="password" placeholder="Password" required>
-			    <input type="text" name="role" placeholder="Role" required>
-			    <input type="text" name="username" placeholder="Username" required>
-			    <button type="submit">Add User</button>
-			</form>
-		</div>
 			
 		<!-- List of Users -->
 		<div class="users-table">
@@ -60,6 +50,7 @@
 			            <th>Email</th>
 			            <th>Role</th>
 			            <th>Username</th>
+			            <th>Status</th>
 			            <th>Actions</th>
 			        </tr>
 			    </thead>
@@ -67,12 +58,23 @@
 			        <tr th:each="user : ${users}">
 			            <td th:text="${user.id}"></td>
 			            <td th:text="${user.email}"></td>
-			            <td th:text="${user.role}"></td>
+			            <td th:text="${user.role}"></td>		            
 			            <td th:text="${user.username}"></td>
 			            <td>
-			                <a class="edit" th:href="@{/admin/users/edit/{id}(id=${user.id})}">Edit</a>
-			                <a class="delete" th:href="@{/admin/users/delete/{id}(id=${user.id})}" onclick="return confirm('Are you sure?')">Delete</a>
-			            </td>
+		                    <span th:if="${user.isEnabled}" class="status-label status-enabled">
+		                    	<i class="fas fa-check-circle"></i>Enabled
+		                    </span>
+		                    <span th:if="${!user.isEnabled}" class="status-label status-disabled">
+		                    	<i class="fas fa-times-circle"></i> Disabled
+		                    </span>
+                		</td>
+		               <td>
+						   <form th:action="@{/admin/users/{action}/{id}(action=${user.isEnabled} ? 'disable' : 'enable', id=${user.id})}" method="post">
+						        <button type="submit" class="btn" th:classappend="${user.isEnabled} ? 'btn-danger' : 'btn-success'">
+						            <span th:text="${user.isEnabled} ? 'Disable' : 'Enable'"></span>
+						        </button>
+						    </form>
+		                </td>			           
 			        </tr>
 			    </tbody>
 			</table>

@@ -13,4 +13,5 @@ public interface UserService {
     List<UserDto> findAll();
     UserDto findById(Long id);
     boolean emailExists(String email);
+    void toggleEnabled(Long id);
 }

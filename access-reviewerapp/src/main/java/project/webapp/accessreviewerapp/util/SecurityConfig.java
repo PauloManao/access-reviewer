@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import project.webapp.accessreviewerapp.service.CustomAuthenticationFailureHandler;
 import project.webapp.accessreviewerapp.service.CustomSucessHandler;
 import project.webapp.accessreviewerapp.service.CustomUserDetailsService;
 
@@ -23,6 +24,9 @@ public class SecurityConfig {
 	
 	@Autowired
 	CustomUserDetailsService customUserDetailsService;
+	
+	@Autowired
+	CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 	
 	@Bean
 	public static PasswordEncoder passwordEncoder() {
@@ -49,9 +53,9 @@ public class SecurityConfig {
 				.successHandler(customSucessHandler).permitAll())
 		
         .formLogin(form -> form
-                .loginPage("/registration")
+                .loginPage("/login")
                 .loginProcessingUrl("/login")
-                .failureUrl("/registration?error") // Redirect to /login with error parameter
+                .failureHandler(customAuthenticationFailureHandler) // Redirect to /login with error parameter
                 .successHandler(customSucessHandler)
                 .permitAll())
 		

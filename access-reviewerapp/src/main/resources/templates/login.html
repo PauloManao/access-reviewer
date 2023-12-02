@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>About</title>
+        <title>Login</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="" th:href="@{/image/favicon.ico}" />
         <!-- Font Awesome icons (free version)-->
@@ -53,6 +53,15 @@
                         <div class="message" th:if="${message != null}">
         					[[${message}]]
         				</div>
+                        <div class="emailInUse" th:if="${emailInUse != null}">
+        					[[${emailInUse}]]
+        				</div>
+     				    <div th:if="${passwordErrors}">
+     				    	<h6>Password must contain:</h6>
+					        <ul>
+					        	<li th:each="error : ${passwordErrors}" th:text="${error}"></li>
+					        </ul>
+			     		</div>
         				<input type="hidden" id="stay-on-signup" th:value="${stayOnSignup}" />
                     <form class="form" id="signup" 
                     th:action="@{/registration}" 
@@ -89,15 +98,19 @@
                 <div class="form-information-children">
                     <h2>Sign in</h2>
                     <p>login details</p>
-                       <div class="message" th:if="${message != null}">
-        					[[${message}]]
-        				</div>
-                    <div class="message" th:if="${param.error}">
-                    	Invalid Username or Password
-                    </div>
+                    <div class="message" th:if="${message != null}">
+     					[[${message}]]
+     				</div>
+					<div th:if="${param.disabled}">
+					    <p class="error">Account is disabled.</p>
+					</div>
+					<div th:if="${param.error}" th:unless="${param.disabled}">
+					    <p class="error">Invalid username or password.</p>
+					</div>
                      <div class="message" th:if="${param.logout}">
                     	Logout Successfully
                     </div>
+
                     <form class="form" id ="signin" th:action="@{/login}" method="post">
                         <label>
                             <i class='bx bx-envelope' ></i>

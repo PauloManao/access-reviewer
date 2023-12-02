@@ -350,6 +350,40 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+
+/* 
+    admin_users
+*/
+
+function toggleUser(userId, element) {
+    var status = element.getAttribute('data-status') === 'true';
+    var action = status ? 'disable' : 'enable';
+
+    fetch(`/admin/users/${action}/${userId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            // Add your CSRF token here if necessary
+        },
+        // body: JSON.stringify({ your data if needed })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success) {
+            element.setAttribute('data-status', data.newStatus);
+            element.src = data.newStatus ? '/path/to/enabled_icon.png' : '/path/to/disabled_icon.png';
+            // Update the toggle animation as necessary
+        } else {
+            console.error('Failed to update user status');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+
+
 /*!
 * Start Bootstrap - Agency v7.0.12 (https://startbootstrap.com/theme/agency)
 * Copyright 2013-2023 Start Bootstrap

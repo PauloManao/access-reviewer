@@ -7,8 +7,18 @@ public class UserDto {
 	private String password;
 	private String role;
 	private String username;
+	private boolean isEnabled = true;
 	
-    public Long getId() {
+	
+    public boolean isEnabled() {
+		return isEnabled;
+	}
+
+	public void setEnabled(boolean isEnabled) {
+		this.isEnabled = isEnabled;
+	}
+
+	public Long getId() {
         return id;
     }
     

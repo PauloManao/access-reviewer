@@ -19,8 +19,21 @@ public class User {
 	private String password;
 	private String role;
 	private String username;
+	private boolean isEnabled = true;
 	
 	
+	public boolean isEnabled() {
+		return isEnabled;
+	}
+
+	public void setEnabled(boolean isEnabled) {
+		this.isEnabled = isEnabled;
+	}
+	
+    public void toggleEnabled() {
+        this.isEnabled = !this.isEnabled;
+    }
+
 	public User(String email, String password, String role, String username) {
 		super();
 		

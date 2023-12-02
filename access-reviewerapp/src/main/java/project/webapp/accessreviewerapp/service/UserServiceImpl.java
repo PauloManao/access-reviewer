@@ -57,6 +57,7 @@ public class UserServiceImpl implements UserService{
             dto.setPassword(user.getPassword());
             dto.setRole(user.getRole());
             dto.setUsername(user.getUsername());
+            dto.setEnabled(user.isEnabled());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -72,6 +73,13 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean emailExists(String email) {
         return userRepository.findByEmail(email) != null;
+    }
+    
+    @Override
+    public void toggleEnabled(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        user.toggleEnabled();
+        userRepository.save(user);
     }
 
 }
