@@ -66,32 +66,37 @@
 /* 
     login page
 */
-window.onload = function() {
-    const stayOnSignup = document.getElementById("stay-on-signup").value;
-    if (stayOnSignup === 'true') {
-        formSignIn.classList.add("hide");
-        formSignUp.classList.remove("hide");
-    }
-};
-const btnSignIn = document.getElementById("sign-in");
-const btnSignUp = document.getElementById("sign-up");
-const formSignUp = document.querySelector(".signup");
-const formSignIn = document.querySelector(".signin");
-
-if(btnSignIn){
-    btnSignIn.addEventListener("click", e =>{
-        formSignUp.classList.add("hide");
-        formSignIn.classList.remove("hide")
-    })
-}
-
-if(btnSignUp){
-    btnSignUp.addEventListener("click", e =>{
-        formSignIn.classList.add("hide");
-        formSignUp.classList.remove("hide")
-    })
-}
-
+document.addEventListener('DOMContentLoaded', function() {
+		
+	window.onload = function() {
+	    const stayOnSignupElement = document.getElementById("stay-on-signup");
+	    if (stayOnSignupElement) {
+	        const stayOnSignup = stayOnSignupElement.value;
+	        if (stayOnSignup === 'true') {
+	            formSignIn.classList.add("hide");
+	            formSignUp.classList.remove("hide");
+	        }
+	    }
+	};
+	const btnSignIn = document.getElementById("sign-in");
+	const btnSignUp = document.getElementById("sign-up");
+	const formSignUp = document.querySelector(".signup");
+	const formSignIn = document.querySelector(".signin");
+	
+	if(btnSignIn){
+	    btnSignIn.addEventListener("click", e =>{
+	        formSignUp.classList.add("hide");
+	        formSignIn.classList.remove("hide")
+	    })
+	}
+	
+	if(btnSignUp){
+	    btnSignUp.addEventListener("click", e =>{
+	        formSignIn.classList.add("hide");
+	        formSignUp.classList.remove("hide")
+	    })
+	}
+});
 
 /* 
     News page
@@ -121,14 +126,70 @@ if(btnTimes){
     });
 }
 
-
 /* 
     Location Details page
 */
 
 document.addEventListener('DOMContentLoaded', function() {
 
-// Function to fetch weather data
+    // Function to send report
+	function sendReport(reviewId, reportReason) {
+	    fetch('/reportReview', {
+	        method: 'POST',
+	        headers: { 
+	            'Content-Type': 'application/json',
+	            'Accept': 'text/plain' // Expecting plain text response
+	        },
+	        body: JSON.stringify({ reviewId, reason: reportReason })
+	    })
+	    .then(response => {
+	        if (!response.ok) {
+	            throw new Error('Error reporting review');
+	        }
+	        return response.text(); // Handling text response
+	    })
+	    .then(message => {
+	        alert(message); // Display the success message
+	    })
+	    .catch(error => {
+	        console.error('Error:', error);
+	    });
+	}
+	
+	// Function to show a small pop-up for reporting
+	function showSmallReportPopup(reviewId, reportIcon) {
+	    const smallPopup = document.createElement('div');
+	    smallPopup.classList.add('small-report-popup');
+	    smallPopup.textContent = 'Report';
+	    smallPopup.onclick = () => {
+	        smallPopup.remove();
+	        showReportOptions(reviewId);
+	    };
+	
+	    // Position the small pop-up near the report icon
+	    const iconRect = reportIcon.getBoundingClientRect();
+	    smallPopup.style.top = `${iconRect.bottom}px`;
+	    smallPopup.style.left = `${iconRect.left}px`;
+	
+	    document.body.appendChild(smallPopup);
+	  
+	    // Function to handle outside click
+	    function handleOutsideClick(event) {
+	        if (!smallPopup.contains(event.target) && !reportIcon.contains(event.target)) {
+	            smallPopup.remove();
+	            document.removeEventListener('click', handleOutsideClick);
+	        }
+	    }
+	
+	    // Add event listener to document
+	    setTimeout(() => { // Timeout ensures that the event listener is not executed immediately
+	        document.addEventListener('click', handleOutsideClick);
+	    }, 0);  
+	    
+	    
+	}
+
+	// Function to fetch weather data
 		function fetchWeather(latitude, longitude, address) {
 			const apiUrl = `/weather?lat=${latitude}&lon=${longitude}`;
 			fetch(apiUrl)
@@ -170,30 +231,115 @@ document.addEventListener('DOMContentLoaded', function() {
 		        });
 		}
 		
-		 // Function to display reviews
-		 
-function displayReviews(reviews) {
-    const reviewsContainer = document.getElementById("previousreviews");
-    reviewsContainer.innerHTML = ""; // Clear previous reviews
-
-    reviews.forEach(reviewDto => {
-        const reviewElement = document.createElement("div");
-        reviewElement.classList.add('review');
-
-        const commentsParagraph = document.createElement("p");
-        commentsParagraph.textContent = reviewDto.comments;
-
-        const userSpan = document.createElement("span");
-        userSpan.textContent = ` by ${reviewDto.username}`; // Display username
-        commentsParagraph.appendChild(userSpan);
-
-        reviewElement.appendChild(commentsParagraph);
-        reviewsContainer.appendChild(reviewElement);
-    });
-}
+		 // Function to display reviews	 
+	function displayReviews(reviews) {
+	    const reviewsContainer = document.getElementById("previousreviews");
+	    reviewsContainer.innerHTML = ""; // Clear previous reviews
+	
+	    reviews.forEach(reviewDto => {
+	        const reviewElement = document.createElement("div");
+	        reviewElement.classList.add('review');
+	
+	        const commentsParagraph = document.createElement("p");
+	        commentsParagraph.textContent = reviewDto.comments;
+	
+	        const userSpan = document.createElement("span");
+	        userSpan.textContent = ` by ${reviewDto.username}`; // Display username
+	        commentsParagraph.appendChild(userSpan);
+	
+	        reviewElement.appendChild(commentsParagraph);
+	        
+	        
+	        // Add three-dots icon for reporting
+	        const reportIcon = document.createElement("div");
+	        reportIcon.classList.add('report-icon');
+	        reportIcon.innerHTML = '...'; // Three dots
+	        reportIcon.onclick = () => showSmallReportPopup(reviewDto.id, reportIcon); // Add onClick handler
+	        reviewElement.appendChild(reportIcon);
+	        
+	        reviewsContainer.appendChild(reviewElement);
+	    });
+	}
+	
+	//pop-up with a list of the reasons for reporting a review
+	function showReportOptions(reviewId) {
+	
+	    // Container for the entire pop-up
+	    const popupContainer = document.createElement('div');
+	    popupContainer.classList.add('report-popup-container');
+	    
+	        // Clicking outside the pop-up to close it
+	    popupContainer.addEventListener('click', function(event) {
+	        if (event.target === popupContainer) {
+	            popupContainer.remove();
+	        }
+	    });
+	
+	    // Create a pop-up container
+	    const reportPopup = document.createElement('div');
+	    reportPopup.classList.add('report-popup');
+	    
+	        // Create a close button (X) at the top right corner of the pop-up
+	    const closeButton = document.createElement('button');
+	    closeButton.textContent = 'X';
+	    closeButton.classList.add('close-button');
+	    closeButton.onclick = () => popupContainer.remove();
+	    reportPopup.appendChild(closeButton);
+	
+	    // Create a title for the pop-up
+	    const title = document.createElement('h3');
+	    title.textContent = 'Report Review';
+	    reportPopup.appendChild(title);
+	
+	    // Reasons for reporting
+	    const reasons = ["Inappropriate Language", "Spam or Advertising", "Harassment or Bullying", "False Information", "Off-topic Content", "Other"];
+	    
+	    // Create a form
+	    const form = document.createElement('form');
+	    form.id = 'reportForm';
+	
+	    reasons.forEach((reason, index) => {
+	        const container = document.createElement('div');
+	        container.classList.add('radio-container');
+	
+	        const radioInput = document.createElement('input');
+	        radioInput.type = 'radio';
+	        radioInput.id = 'reason' + index;
+	        radioInput.name = 'reportReason';
+	        radioInput.value = reason;
+	
+	        const label = document.createElement('label');
+	        label.htmlFor = 'reason' + index;
+	        label.textContent = reason;
+	
+	        container.appendChild(radioInput);
+	        container.appendChild(label);
+	        form.appendChild(container);
+	    });
+	
+	    reportPopup.appendChild(form);
+	    
+	    
+	
+	    // Submit button
+	    const submitButton = document.createElement('button');
+	    submitButton.textContent = 'Submit Report';
+	    submitButton.type = 'button';
+	    submitButton.onclick = () => {
+	        const selectedReason = document.querySelector('input[name="reportReason"]:checked').value;
+	        sendReport(reviewId, selectedReason);
+	        popupContainer.remove(); // Remove the entire pop-up container after submission
+	    };
+	    reportPopup.appendChild(submitButton);
+	    
+	
+	    // Append the pop-up to the container, then append the container to the body
+	    popupContainer.appendChild(reportPopup);
+	    document.body.appendChild(popupContainer);
+	}
 		
 		// Event listener for 'Write a Review' button
-				document.getElementById("writeReviewBtn").addEventListener('click', function() {
+			document.getElementById("writeReviewBtn").addEventListener('click', function() {
 			const addressText = document.getElementById("addressText").textContent;
 			navigateToReviewPage(addressText);
 		});
@@ -209,8 +355,7 @@ function displayReviews(reviews) {
         fetchWeather(latitude, longitude, address);
         fetchReviews(address);
     }
-		
-
+	
 });
 
 

@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import project.webapp.accessreviewerapp.dto.ReportReviewRequest;
 import project.webapp.accessreviewerapp.dto.ReviewDto;
 
 import project.webapp.accessreviewerapp.entities.Address;
@@ -43,6 +44,13 @@ public class ReviewController {
         this.reviewService = reviewService;
         this.addressRepository = addressRepository;
         this.userRepository = userRepository;
+    }
+    
+    //report a review
+    @PostMapping("/reportReview")
+    public ResponseEntity<?> reportReview(@RequestBody ReportReviewRequest request) {
+        reviewService.reportReview(request.getReviewId(), request.getReason());
+        return ResponseEntity.ok("Review reported successfully");
     }
     
     // Endpoint to save a review (for non-image reviews)
@@ -81,8 +89,8 @@ public class ReviewController {
     	    }
     }
     
-    //check the comments in database to display them in the details page
-    // Endpoint to get comments by address ID
+    
+    // endpoint to get comments by address ID and display them on the details page
     @GetMapping("/comments")
     public ResponseEntity<List<ReviewDto>> getCommentsByAddressString(@RequestParam("addressString") String addressString) {
         Optional<Address> address = addressRepository.findByAddress(addressString);
@@ -124,7 +132,7 @@ public class ReviewController {
         return "redirect:/reviews_list";
     }
     
-    //edit reviews
+ 
 
     
     //delete reviews

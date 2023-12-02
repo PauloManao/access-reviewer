@@ -17,9 +17,11 @@ import project.webapp.accessreviewerapp.dto.ReviewDto;
 import project.webapp.accessreviewerapp.entities.Address;
 import project.webapp.accessreviewerapp.entities.Image;
 import project.webapp.accessreviewerapp.entities.Review;
+import project.webapp.accessreviewerapp.entities.ReviewReport;
 import project.webapp.accessreviewerapp.entities.User;
 import project.webapp.accessreviewerapp.repositories.AddressRepository;
 import project.webapp.accessreviewerapp.repositories.ImageRepository;
+import project.webapp.accessreviewerapp.repositories.ReviewReportRepository;
 import project.webapp.accessreviewerapp.repositories.ReviewRepository;
 import project.webapp.accessreviewerapp.repositories.UserRepository;
 import project.webapp.accessreviewerapp.util.S3Util;
@@ -37,7 +39,10 @@ public class ReviewService {
     private ImageRepository imageRepository;
     
     @Autowired
-    private UserRepository userRepository; // Add UserRepository
+    private UserRepository userRepository; 
+    
+    @Autowired
+    private ReviewReportRepository reviewReportRepository;
 
     
     // Base URL for accessing the uploaded files (you can set this in your application.properties)
@@ -47,7 +52,23 @@ public class ReviewService {
 	public Review saveReview(Review review) {
         return reviewRepository.save(review);
     }
+	
+	//report review functionality
+	
+    public void reportReview(Long reviewId, String reportReason) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new EntityNotFoundException("Review not found"));
 
+        ReviewReport report = new ReviewReport();
+        report.setReview(review);
+        report.setReportReason(reportReason);
+        report.setReportedAt(LocalDateTime.now());
+
+        reviewReportRepository.save(report);
+    }
+	
+	
+	//submit review
     public Review submitReview(String addressString, ReviewDto reviewDto, List<MultipartFile> imageFiles) {
     	
     	  // Fetch the user or throw exception if not found
@@ -130,6 +151,7 @@ public class ReviewService {
                           ReviewDto dto = new ReviewDto();
                           dto.setComments(review.getComments());
                           dto.setUsername(review.getUser().getUsername()); // Set the username
+                          dto.setId(review.getId());
                           // Set other fields if necessary
                           return dto;
                       })
