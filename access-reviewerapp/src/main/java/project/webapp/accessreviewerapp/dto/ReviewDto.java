@@ -21,6 +21,16 @@ public class ReviewDto {
     private Long id;
     private String username;
     private int reportCount;
+    private boolean enabled;
+
+    // Getters and Setters
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
 	 
 	 public int getReportCount() {

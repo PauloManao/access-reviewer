@@ -55,38 +55,44 @@ public class ReviewController {
     
     // Endpoint to save a review (for non-image reviews)
     @PostMapping("/save")
-    public ResponseEntity<String> saveReview(@RequestBody Review review) {
+    public String saveReview(@RequestBody Review review, RedirectAttributes redirectAttributes) {
         // Ensure the address exists in the database
         Address existingAddress = addressRepository.save(review.getAddress());
         review.setAddress(existingAddress);
-
-        reviewService.saveReview(review); 
-        return ResponseEntity.ok("Review submitted successfully with ID: " + review.getId());
+        
+        Review savedReview = reviewService.saveReview(review);
+        redirectAttributes.addFlashAttribute("reviewId", savedReview.getId());
+        return "redirect:/submitted_review";
     }
     
     // Submit a review with images
     @PostMapping("/submit")
-    public ResponseEntity<String> submitReview(@ModelAttribute ReviewDto reviewDto,
-                                               @RequestParam("images") List<MultipartFile> images,
-                                               Principal principal) {
-    	
-    	  String email = principal.getName(); // This should give you the username (email in your case)
-    	    User user = userRepository.findByEmail(email);
-    	    
-    	    if (user == null) {
-    	        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-    	    }
-    	    
-    	    reviewDto.setUserId(user.getId()); // Set the user ID from the fetched user
+    public String submitReview(@ModelAttribute ReviewDto reviewDto,
+                               @RequestParam("images") List<MultipartFile> images,
+                               Principal principal, RedirectAttributes redirectAttributes) {
+        String email = principal.getName(); // Get username (email)
+        User user = userRepository.findByEmail(email);
 
-    	    try {
-    	        Review review = reviewService.submitReview(reviewDto.getAddressString(), reviewDto, images);
-    	        return ResponseEntity.ok("Review submitted successfully with ID: " + review.getId());
-    	    } catch (Exception e) {
-    	        // Log the exception and handle it as per your application's requirement
-    	        e.printStackTrace();
-    	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred: " + e.getMessage());
-    	    }
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+        }
+
+        reviewDto.setUserId(user.getId()); // Set user ID
+
+        try {
+            Review review = reviewService.submitReview(reviewDto.getAddressString(), reviewDto, images);
+            redirectAttributes.addFlashAttribute("reviewId", review.getId());
+            return "redirect:/submitted_review";
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Error occurred: " + e.getMessage());
+            return "redirect:/error_page"; // Replace with your error page
+        }
+    }
+    
+    @GetMapping("/submitted_review")
+    public String showSubmittedReview(Model model) {
+        return "submitted_review"; 
     }
     
     
@@ -99,13 +105,13 @@ public class ReviewController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Address not found");
         }
         
-        List<ReviewDto> comments = reviewService.getCommentsByAddressId(address.get().getId());
+        List<ReviewDto> enabledComments = reviewService.getEnabledCommentsByAddressId(address.get().getId());
         
-        if (comments.isEmpty()) {
+        if (enabledComments.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         
-        return new ResponseEntity<>(comments, HttpStatus.OK);
+        return new ResponseEntity<>(enabledComments, HttpStatus.OK);
     }
     
     //list reviews in the review management page
@@ -133,8 +139,6 @@ public class ReviewController {
     }
     
  
-
-    
     //delete reviews
     @GetMapping("/reviews_list/delete/{id}")
     public String deleteReview(@PathVariable Long id, RedirectAttributes redirectAttributes) {
@@ -142,5 +146,21 @@ public class ReviewController {
         redirectAttributes.addFlashAttribute("reviewerMessage", "Review deleted successfully with ID: " + id);
         return "redirect:/reviews_list";
     }
+    
+    @PostMapping("/admin/reviews/enable/{id}")
+    public String enableReview(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        reviewService.toggleReviewEnabled(id);
+        redirectAttributes.addFlashAttribute("reviewerMessage", "Review enabled successfully with ID: " + id);
+        return "redirect:/reviews_list";
+    }
+
+    @PostMapping("/admin/reviews/disable/{id}")
+    public String disableReview(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        reviewService.toggleReviewEnabled(id);
+        redirectAttributes.addFlashAttribute("reviewerMessage", "Review disabled successfully with ID: " + id);
+        return "redirect:/reviews_list";
+    }
+    
+    
         
 }

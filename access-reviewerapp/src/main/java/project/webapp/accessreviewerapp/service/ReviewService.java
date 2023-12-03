@@ -208,6 +208,8 @@ public class ReviewService {
             
             int reportCount = reviewReportRepository.countByReviewId(review.getId());
             dto.setReportCount(reportCount);
+            
+            dto.setEnabled(review.isEnabled());
 
             return dto;
         }).collect(Collectors.toList());
@@ -216,13 +218,21 @@ public class ReviewService {
     
     public ReviewDto findById(Long id) {
         Review review = reviewRepository.findById(id).orElseThrow(() -> new RuntimeException("Review not found"));
-        ReviewDto reviewDto = new ReviewDto(review.getAccessToServices(), review.getSeatsTablesCounters(), review.getEntrance(),review.getRateExperience(),
+        ReviewDto reviewDto = new ReviewDto(review.getAccessToServices(), 
+        		review.getSeatsTablesCounters(), 
+        		review.getEntrance(),
+        		review.getRateExperience(),
         		review.getRestRooms(),review.getComments());
         reviewDto.setId(review.getId()); // Make sure this line is setting the ID
+        reviewDto.setEnabled(review.isEnabled());
         
         // Set address details
         if (review.getAddress() != null) {
             reviewDto.setAddressString(review.getAddress().getAddress());
+        }
+        
+        if (review.getUser() != null) {
+            reviewDto.setUsername(review.getUser().getUsername());
         }
         
         // Get and set the report count for this review
@@ -231,6 +241,21 @@ public class ReviewService {
         
         return reviewDto;
     }
+    
+    public void toggleReviewEnabled(Long id) {
+        Review review = reviewRepository.findById(id)
+                        .orElseThrow(() -> new EntityNotFoundException("Review not found"));
+        review.toggleEnabled();
+        reviewRepository.save(review);
+    }
 
+    public List<ReviewDto> getEnabledCommentsByAddressId(Long addressId) {
+        List<Review> enabledReviews = reviewRepository.findEnabledByAddressId(addressId);
+        return enabledReviews.stream()
+                             .map(review -> findById(review.getId())) // Use findById for conversion
+                             .collect(Collectors.toList());
+    }
+    
+    
 
 }

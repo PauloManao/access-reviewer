@@ -11776,8 +11776,8 @@ main a:hover{
     border: 1px solid #ddd;
 }
 
-td.comments, th.comments {
-    max-width: 150px; 
+td.comments, th.comments, td.address-review-list, th.address-review-list {
+    max-width: 180px; 
     word-wrap: break-word;
 }
 

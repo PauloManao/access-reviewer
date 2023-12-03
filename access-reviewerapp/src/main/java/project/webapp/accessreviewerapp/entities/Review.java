@@ -50,6 +50,22 @@ public class Review {
     
     private LocalDateTime submissionDate;
     
+    private boolean isEnabled = true;
+
+    // Getter and Setter for isEnabled
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
+    }
+
+    // Toggle function
+    public void toggleEnabled() {
+        this.isEnabled = !this.isEnabled;
+    }
+    
     public LocalDateTime getSubmissionDate() {
         return submissionDate;
     }

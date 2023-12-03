@@ -160,15 +160,15 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 	
 	// Function to check if the user is authenticated
-async function isAuthenticated() {
-    try {
-        const response = await fetch('/api/isAuthenticated');
-        return await response.json();
-    } catch (error) {
-        console.error('Error:', error);
-        return false;
-    }
-}
+	async function isAuthenticated() {
+	    try {
+	        const response = await fetch('/api/isAuthenticated');
+	        return await response.json();
+	    } catch (error) {
+	        console.error('Error:', error);
+	        return false;
+	    }
+	}
 	
 	// Function to show a small pop-up for reporting
 async function showSmallReportPopup(reviewId, reportIcon) {

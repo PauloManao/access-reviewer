@@ -38,15 +38,17 @@ public class SecurityConfig {
 		
 		http.csrf(c -> c.disable())
 		.authorizeHttpRequests(request -> request.requestMatchers("/admin-page", "/admin", "admin_user_edit", 
-				"admin_users", "/admin/users", "/admin/users/edit/*", "/admin/users/update/*", "/admin/users/delete/*")
+				"admin_users", "/admin/users", "/admin/users/edit/*", "/admin/users/update/*", "/admin/users/delete/*",
+				"/admin/users/enable/*", "admin/users/disable/*")
 				.hasAuthority("admin")
-				.requestMatchers("/reviewer", "/reviews_list")
+				.requestMatchers("/reviewer", "/reviews_list",
+						"/admin/reviews/enable/*", "/admin/reviews/disable/*")
 				.hasAuthority("reviewer")
 				.requestMatchers("/user-page", "/user").hasAuthority("user")
 				.requestMatchers("/registration", "/styles.css", "/script.js", "/index", "/login", "/logout", 
 						"/image/**", "/news","/about","/details.html","/geocode","/save","/submit",
 						"/reviews/comments/address/{addressId}","/comments","/review","/weather",
-						"/api/isAuthenticated","/reportReview", "/").permitAll() //REGISTRATION
+						"/api/isAuthenticated","/reportReview", "/comments/enabled","/submitted_review","/").permitAll() //REGISTRATION
 				.anyRequest().authenticated())
 		
 		.formLogin(form -> form.loginPage("/login").loginProcessingUrl("/login")
