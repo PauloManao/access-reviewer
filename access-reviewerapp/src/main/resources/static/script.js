@@ -63,6 +63,7 @@
         });
     });
 
+
 /* 
     login page
 */
@@ -98,6 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 });
 
+
 /* 
     News page
 */
@@ -125,6 +127,7 @@ if(btnTimes){
         }
     });
 }
+
 
 /* 
     Location Details page
@@ -156,38 +159,57 @@ document.addEventListener('DOMContentLoaded', function() {
 	    });
 	}
 	
+	// Function to check if the user is authenticated
+async function isAuthenticated() {
+    try {
+        const response = await fetch('/api/isAuthenticated');
+        return await response.json();
+    } catch (error) {
+        console.error('Error:', error);
+        return false;
+    }
+}
+	
 	// Function to show a small pop-up for reporting
-	function showSmallReportPopup(reviewId, reportIcon) {
-	    const smallPopup = document.createElement('div');
-	    smallPopup.classList.add('small-report-popup');
-	    smallPopup.textContent = 'Report';
-	    smallPopup.onclick = () => {
-	        smallPopup.remove();
-	        showReportOptions(reviewId);
-	    };
-	
-	    // Position the small pop-up near the report icon
-	    const iconRect = reportIcon.getBoundingClientRect();
-	    smallPopup.style.top = `${iconRect.bottom}px`;
-	    smallPopup.style.left = `${iconRect.left}px`;
-	
-	    document.body.appendChild(smallPopup);
-	  
-	    // Function to handle outside click
-	    function handleOutsideClick(event) {
-	        if (!smallPopup.contains(event.target) && !reportIcon.contains(event.target)) {
-	            smallPopup.remove();
-	            document.removeEventListener('click', handleOutsideClick);
-	        }
-	    }
-	
-	    // Add event listener to document
-	    setTimeout(() => { // Timeout ensures that the event listener is not executed immediately
-	        document.addEventListener('click', handleOutsideClick);
-	    }, 0);  
-	    
-	    
-	}
+async function showSmallReportPopup(reviewId, reportIcon) {
+    try {
+        const isAuth = await isAuthenticated();
+        if (!isAuth) {
+            alert('You need to be signed in to report a review.');
+            return;
+        }
+
+        const smallPopup = document.createElement('div');
+        smallPopup.classList.add('small-report-popup');
+        smallPopup.textContent = 'Report';
+        smallPopup.onclick = () => {
+            smallPopup.remove();
+            showReportOptions(reviewId);
+        };
+
+        // Position the small pop-up near the report icon
+        const iconRect = reportIcon.getBoundingClientRect();
+        smallPopup.style.top = `${iconRect.bottom}px`;
+        smallPopup.style.left = `${iconRect.left}px`;
+
+        document.body.appendChild(smallPopup);
+
+        // Function to handle outside click
+        function handleOutsideClick(event) {
+            if (!smallPopup.contains(event.target) && !reportIcon.contains(event.target)) {
+                smallPopup.remove();
+                document.removeEventListener('click', handleOutsideClick);
+            }
+        }
+
+        // Add event listener to document
+        setTimeout(() => { // Timeout ensures that the event listener is not executed immediately
+            document.addEventListener('click', handleOutsideClick);
+        }, 0);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
 	// Function to fetch weather data
 		function fetchWeather(latitude, longitude, address) {

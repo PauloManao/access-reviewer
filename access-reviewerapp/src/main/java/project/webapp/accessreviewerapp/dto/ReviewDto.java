@@ -20,6 +20,15 @@ public class ReviewDto {
     private Long addressId;
     private Long id;
     private String username;
+    private int reportCount;
+
+	 
+	 public int getReportCount() {
+	     return reportCount;
+	 }
+	 public void setReportCount(int reportCount) {
+	     this.reportCount = reportCount;
+	 }
     
     public String getUsername() {
         return username;

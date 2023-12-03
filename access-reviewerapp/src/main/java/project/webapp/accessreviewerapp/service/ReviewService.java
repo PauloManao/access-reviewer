@@ -197,14 +197,17 @@ public class ReviewService {
             dto.setSeatsTablesCounters(review.getSeatsTablesCounters());
             dto.setSubmissionDate(review.getSubmissionDate());
 
-            // Populate userId and addressId
+            // Populate username and address
             if (review.getUser() != null) {
-                dto.setUserId(review.getUser().getId());
+                dto.setUsername(review.getUser().getUsername()); //dto.setUserId(review.getUser().getId());
             }
             if (review.getAddress() != null) {
                 // Assuming getAddress() returns the Address entity and you want the ID
-                dto.setAddressId(review.getAddress().getId());
+                dto.setAddressString(review.getAddress().getAddress());
             }
+            
+            int reportCount = reviewReportRepository.countByReviewId(review.getId());
+            dto.setReportCount(reportCount);
 
             return dto;
         }).collect(Collectors.toList());
@@ -216,6 +219,16 @@ public class ReviewService {
         ReviewDto reviewDto = new ReviewDto(review.getAccessToServices(), review.getSeatsTablesCounters(), review.getEntrance(),review.getRateExperience(),
         		review.getRestRooms(),review.getComments());
         reviewDto.setId(review.getId()); // Make sure this line is setting the ID
+        
+        // Set address details
+        if (review.getAddress() != null) {
+            reviewDto.setAddressString(review.getAddress().getAddress());
+        }
+        
+        // Get and set the report count for this review
+        int reportCount = reviewReportRepository.countByReviewId(id);
+        reviewDto.setReportCount(reportCount);
+        
         return reviewDto;
     }
 

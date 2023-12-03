@@ -64,7 +64,7 @@ public class ReviewController {
         return ResponseEntity.ok("Review submitted successfully with ID: " + review.getId());
     }
     
-    // New endpoint for submitting a review with images
+    // Submit a review with images
     @PostMapping("/submit")
     public ResponseEntity<String> submitReview(@ModelAttribute ReviewDto reviewDto,
                                                @RequestParam("images") List<MultipartFile> images,
@@ -90,7 +90,7 @@ public class ReviewController {
     }
     
     
-    // endpoint to get comments by address ID and display them on the details page
+    //  get comments by address ID and display them on the details page
     @GetMapping("/comments")
     public ResponseEntity<List<ReviewDto>> getCommentsByAddressString(@RequestParam("addressString") String addressString) {
         Optional<Address> address = addressRepository.findByAddress(addressString);
@@ -108,7 +108,7 @@ public class ReviewController {
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
     
-    //list reviews in the review page
+    //list reviews in the review management page
     @GetMapping("/reviews_list")
     public String listReviews(Model model) {
         List<ReviewDto> reviews = reviewService.findAll();

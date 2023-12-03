@@ -46,15 +46,11 @@
 			        <tr>
 			            <th>ID</th>
 			            <th>Submission Date</th>
-			            <th>Experience</th>
-			            <th>AccessToServices</th>
-			            <th>Entrance</th>	                        
-			            
-			            <th>RestRooms</th>        
-			            <th>SeatsTablesCounters</th>
-			            <th>Address ID</th>
-			            <th>User ID</th>
-			            <th class="comments">Comments</th>	
+	
+			            <th>Address</th>
+			            <th>Username</th>
+			            <th class="comments">Comments</th>
+			            <th>Reports Count</th>	
 						<th>Actions</th>
 			        </tr>
 			    </thead>
@@ -62,15 +58,11 @@
 			        <tr th:each="review : ${reviews_list}">
 			            <td th:text="${review.id}"></td>
 			            <td th:text="${review.submissionDate}"></td>
-			            <td th:text="${review.rateExperience}"></td>
-			            <td th:text="${review.accessToServices}"></td>     
-			            <td th:text="${review.entrance}"></td>
-			            
-			            <td th:text="${review.restRooms}"></td>	            	            
-			            <td th:text="${review.seatsTablesCounters}"></td>	                        
-						<td th:text="${review.addressId}"></td>	
-						<td th:text="${review.userId}"></td>
-			            <td class="comments" th:text="${review.comments}"></td>	
+			           	                        
+						<td th:text="${review.addressString}"></td>	
+						<td th:text="${review.username}"></td>
+			            <td class="comments" th:text="${review.comments}"></td>
+			            <td th:text="${review.reportCount}"></td>	
 			            <td>
 			                <a class="edit" th:href="@{/reviews_list/edit/{id}(id=${review.id})}">Edit</a>
 			                <a class="delete" th:href="@{/reviews_list/delete/{id}(id=${review.id})}" onclick="return confirm('Are you sure?')">Delete</a>
