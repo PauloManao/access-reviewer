@@ -161,6 +161,10 @@ public class ReviewController {
         return "redirect:/reviews_list";
     }
     
-    
+    @GetMapping("/images")
+    public ResponseEntity<List<String>> getImagesForAddress(@RequestParam("addressString") String addressString) {
+        List<String> imageUrls = reviewService.getImageUrlsForAddress(addressString);
+        return ResponseEntity.ok(imageUrls);
+    }
         
 }

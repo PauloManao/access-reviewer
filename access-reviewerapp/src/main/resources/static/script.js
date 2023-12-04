@@ -46,7 +46,7 @@
         // Function to open a new webpage with the location details
         function openAddressPage(address, latitude, longitude) {
             const queryString = `?address=${encodeURIComponent(address)}&lat=${latitude}&lon=${longitude}`;
-            window.open(`/details.html${queryString}`, "_blank");
+            window.location.href = `/details.html${queryString}`;
         }
 
         // Enable pressing Enter to perform the search
@@ -134,6 +134,74 @@ if(btnTimes){
 */
 
 document.addEventListener('DOMContentLoaded', function() {
+	
+	function setupSwipeScrolling() {
+	    const imageContainer = document.querySelector('.image-place');
+	    let isDown = false;
+	    let startX;
+	    let scrollLeft;
+	
+	    imageContainer.addEventListener('mousedown', (e) => {
+	        isDown = true;
+	        startX = e.pageX - imageContainer.offsetLeft;
+	        scrollLeft = imageContainer.scrollLeft;
+	    });
+	
+	    imageContainer.addEventListener('mouseleave', () => {
+	        isDown = false;
+	    });
+	
+	    imageContainer.addEventListener('mouseup', () => {
+	        isDown = false;
+	    });
+	
+	    imageContainer.addEventListener('mousemove', (e) => {
+	        if (!isDown) return;
+	        e.preventDefault();
+	        const x = e.pageX - imageContainer.offsetLeft;
+	        const walk = (x - startX) * 2; // Speed of scroll
+	        imageContainer.scrollLeft = scrollLeft - walk;
+	    });
+	}
+		
+	//load images
+	    function loadImagesForAddress(addressString) {
+        fetch(`/images?addressString=${addressString}`)
+            .then(response => response.json())
+            .then(imageUrls => {
+                const imageContainer = document.querySelector('.image-place');
+                imageUrls.forEach(url => {
+                    const img = document.createElement('img');
+                    img.src = url;
+                    img.classList.add('location-image');
+                    img.addEventListener('click', () => openImagePopup(url));
+                    imageContainer.appendChild(img);
+                });
+                setupSwipeScrolling();
+            });
+    }
+    
+	function openImagePopup(url) {
+	    const popup = document.createElement('div');
+	    popup.classList.add('image-popup');
+	
+	    const content = document.createElement('div'); // New container for image and button
+	    content.classList.add('popup-content');
+	    popup.appendChild(content);
+	    
+	    const img = document.createElement('img');
+	    img.src = url;
+	    img.classList.add('popup-image');
+	    content.appendChild(img);
+	
+	    const closeBtn = document.createElement('button');
+	    closeBtn.textContent = 'Close';
+	    closeBtn.classList.add('close-popup');
+	    closeBtn.addEventListener('click', () => popup.remove());
+	    content.appendChild(closeBtn);
+	
+	    document.body.appendChild(popup);
+	}
 
     // Function to send report
 	function sendReport(reviewId, reportReason) {
@@ -376,6 +444,7 @@ async function showSmallReportPopup(reviewId, reportIcon) {
 		    if (address && !isNaN(latitude) && !isNaN(longitude)) {
         fetchWeather(latitude, longitude, address);
         fetchReviews(address);
+        loadImagesForAddress(address);
     }
 	
 });

@@ -11431,7 +11431,7 @@ main a:hover{
 }
 
 
-/*-------------------------CSS for Details page-------------------------------*/
+/*-------------------------CSS for location Details page-------------------------------*/
 
 
 .review {
@@ -11455,7 +11455,10 @@ main a:hover{
     height: 100vh;
     background-color:#FEF9F8;
     flex-direction: column;
-    min-height: 100vh;		
+    max-width: 100vw;
+    padding: 0 10px;
+    min-height: 100vh;
+    margin: 0 auto;		
 }
 
 #addressDetails{
@@ -11468,9 +11471,6 @@ main a:hover{
     margin-bottom: 10px; 
 }
 
-.image-place{
-	margin-bottom: 10px;
-}
 
 
 .details-container .review {
@@ -11479,7 +11479,7 @@ main a:hover{
     padding: 15px; 
     margin-bottom: 15px; 
     border-radius: 5px;
-    width: 95%;
+    width: 100%;
     display:flex;
     overflow: hidden;
   
@@ -11580,6 +11580,66 @@ main a:hover{
     font-size: 15px;
 }
 
+.image-place {
+	cursor: pointer;
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+    width: 100%;
+    gap: 10px;
+    scrollbar-width: thin; /* For browsers that support it */
+    scrollbar-color: blue gray; /* Custom scrollbar colors */
+    -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS devices */
+}
+
+.location-image {
+    flex: 0 0 auto; /* Prevents images from shrinking */
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 5px;
+    
+}
+
+/* Optional: Style for hiding scrollbar */
+.image-place::-webkit-scrollbar {
+    display: none;
+}
+
+.image-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(222, 222, 227, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000; 
+    text-align: center;
+}
+
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.popup-image {
+    max-width: 90vw;
+    max-height: 90vh;
+    margin-bottom: 20px;
+}
+
+.close-popup {
+    background: #898989;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
 
 /*-------------------------CSS for review page------------------------*/
 

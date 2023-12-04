@@ -48,7 +48,7 @@ public class SecurityConfig {
 				.requestMatchers("/registration", "/styles.css", "/script.js", "/index", "/login", "/logout", 
 						"/image/**", "/news","/about","/details.html","/geocode","/save","/submit",
 						"/reviews/comments/address/{addressId}","/comments","/review","/weather",
-						"/api/isAuthenticated","/reportReview", "/comments/enabled","/submitted_review","/").permitAll() //REGISTRATION
+						"/api/isAuthenticated","/reportReview", "/comments/enabled","/submitted_review","/images","/").permitAll() //REGISTRATION
 				.anyRequest().authenticated())
 		
 		.formLogin(form -> form.loginPage("/login").loginProcessingUrl("/login")

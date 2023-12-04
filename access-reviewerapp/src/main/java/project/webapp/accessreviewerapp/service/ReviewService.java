@@ -257,5 +257,15 @@ public class ReviewService {
     }
     
     
+    public List<String> getImageUrlsForAddress(String addressString) {
+        Address address = addressRepository.findByAddress(addressString)
+                            .orElseThrow(() -> new EntityNotFoundException("Address not found"));
+        
+        List<Review> reviews = reviewRepository.findByAddressId(address.getId());
+        return reviews.stream()
+                      .flatMap(review -> review.getImages().stream())
+                      .map(Image::getImageUrl)
+                      .collect(Collectors.toList());
+    }
 
 }
