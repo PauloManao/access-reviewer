@@ -267,5 +267,24 @@ public class ReviewService {
                       .map(Image::getImageUrl)
                       .collect(Collectors.toList());
     }
+    
+
+    public List<ReviewDto> findReviewsByUserId(Long userId) {
+        return reviewRepository.findByUserId(userId).stream()
+                .map(review -> {
+                    // Create a new ReviewDto object
+                    ReviewDto dto = new ReviewDto();
+
+                    // Set only the necessary fields: submission date, address, and comments
+                    dto.setSubmissionDate(review.getSubmissionDate());
+                    dto.setAddressString(review.getAddress() != null ? review.getAddress().getAddress() : null); // assuming getAddress() returns the address string
+                    dto.setComments(review.getComments());
+                    dto.setId(review.getId()); // You might need the review ID for reference
+
+                    // Return the dto object
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
 
 }

@@ -19,4 +19,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long>{
     
     @Query("SELECT r FROM Review r WHERE r.address.id = :addressId AND r.isEnabled = true")
     List<Review> findEnabledByAddressId(@Param("addressId") Long addressId);
+    
+    List<Review> findByUserId(Long userId);
 }

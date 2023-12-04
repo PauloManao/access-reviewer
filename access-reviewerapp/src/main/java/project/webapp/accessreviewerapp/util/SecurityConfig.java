@@ -44,11 +44,12 @@ public class SecurityConfig {
 				.requestMatchers("/reviewer", "/reviews_list",
 						"/admin/reviews/enable/*", "/admin/reviews/disable/*")
 				.hasAuthority("reviewer")
-				.requestMatchers("/user-page", "/user").hasAuthority("user")
+				.requestMatchers("/user-page", "/user", "/user_review","/user_reviews").hasAuthority("user")
 				.requestMatchers("/registration", "/styles.css", "/script.js", "/index", "/login", "/logout", 
 						"/image/**", "/news","/about","/details.html","/geocode","/save","/submit",
 						"/reviews/comments/address/{addressId}","/comments","/review","/weather",
-						"/api/isAuthenticated","/reportReview", "/comments/enabled","/submitted_review","/images","/").permitAll() //REGISTRATION
+						"/api/isAuthenticated","/reportReview", "/comments/enabled","/submitted_review",
+						"/images","/").permitAll() //REGISTRATION
 				.anyRequest().authenticated())
 		
 		.formLogin(form -> form.loginPage("/login").loginProcessingUrl("/login")

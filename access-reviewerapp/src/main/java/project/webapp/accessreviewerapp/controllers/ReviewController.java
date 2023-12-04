@@ -1,6 +1,7 @@
 package project.webapp.accessreviewerapp.controllers;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional; // Make sure to import Optional
 
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.persistence.EntityNotFoundException;
 import project.webapp.accessreviewerapp.dto.ReportReviewRequest;
 import project.webapp.accessreviewerapp.dto.ReviewDto;
 
@@ -27,6 +29,7 @@ import project.webapp.accessreviewerapp.entities.Address;
 import project.webapp.accessreviewerapp.entities.Review;
 import project.webapp.accessreviewerapp.entities.User;
 import project.webapp.accessreviewerapp.repositories.AddressRepository;
+import project.webapp.accessreviewerapp.repositories.ReviewRepository;
 import project.webapp.accessreviewerapp.repositories.UserRepository;
 import project.webapp.accessreviewerapp.service.ReviewService;
 
@@ -45,6 +48,9 @@ public class ReviewController {
         this.addressRepository = addressRepository;
         this.userRepository = userRepository;
     }
+    
+    @Autowired
+    private ReviewRepository reviewRepository;
     
     //report a review
     @PostMapping("/reportReview")
@@ -165,6 +171,37 @@ public class ReviewController {
     public ResponseEntity<List<String>> getImagesForAddress(@RequestParam("addressString") String addressString) {
         List<String> imageUrls = reviewService.getImageUrlsForAddress(addressString);
         return ResponseEntity.ok(imageUrls);
+    }
+    
+    @GetMapping("/user_reviews")
+    public String userReviews(Principal principal, Model model) {
+        String email = principal.getName(); // Get the currently logged-in user's email
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            List<ReviewDto> userReviews = reviewService.findReviewsByUserId(user.getId());
+            model.addAttribute("reviews_list", userReviews);
+        } else {
+            // Handle the case where the user is not found
+            model.addAttribute("reviews_list", new ArrayList<>());
+        }
+        return "user_review"; // Name of the Thymeleaf template for user reviews
+    }
+    
+    @PostMapping("/delete_review/{id}")
+    public String deleteReview(@PathVariable("id") Long id, Principal principal, RedirectAttributes redirectAttributes) {
+        User user = userRepository.findByEmail(principal.getName());
+        Review review = reviewRepository.findById(id)
+                        .orElseThrow(() -> new EntityNotFoundException("Review not found"));
+
+        // Check if the review belongs to the logged-in user
+        if (review.getUser().equals(user)) {
+            reviewService.deleteReview(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Review deleted successfully");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "You can't delete reviews that are not yours");
+        }
+
+        return "redirect:/user_reviews";
     }
         
 }
