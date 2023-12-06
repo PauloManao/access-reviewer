@@ -110,6 +110,14 @@
                      <div class="message" th:if="${param.logout}">
                     	Logout Successfully
                     </div>
+                    
+                    <!-- Reset Password messages -->
+					<div th:if="${param.error}">
+					    <div class="alert alert-danger" role="alert" th:text="${param.error}"></div>
+					</div>
+					<div th:if="${param.message}">
+					    <div class="alert alert-success" role="alert" th:text="${param.message}"></div>
+					</div>
 
                     <form class="form" id ="signin" th:action="@{/login}" method="post">
                         <label>
@@ -122,6 +130,7 @@
                         </label>
                         <input type="submit" value="Sign in">
                     </form>
+                    <div class="forgot-password-link"><a th:href="@{/forgot-password}">Forgot password</a></div><br>
                 </div>
             </div>
         </div>

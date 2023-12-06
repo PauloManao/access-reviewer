@@ -49,7 +49,8 @@ public class SecurityConfig {
 						"/image/**", "/news","/about","/details.html","/geocode","/save","/submit",
 						"/reviews/comments/address/{addressId}","/comments","/review","/weather",
 						"/api/isAuthenticated","/reportReview", "/comments/enabled","/submitted_review",
-						"/images","/").permitAll() //REGISTRATION
+						"/images","/forgot-password", "/forgot_password", 
+						"/reset-password", "/reset_password","/").permitAll() //REGISTRATION
 				.anyRequest().authenticated())
 		
 		.formLogin(form -> form.loginPage("/login").loginProcessingUrl("/login")

@@ -11961,13 +11961,13 @@ td.comments, th.comments, td.address-review-list, th.address-review-list {
 }
 
 .user-page{
-	margin-top:50px;
+	margin-top:80px;
 	padding-top:10%;
 	display: block;
     align-items: center;
     justify-content: center;
     min-width: 360px;
-    height:500px;
+    height:80%;
     text-align: center;
     border-radius:20px;
    	background: rgba(255, 255, 255, 0.8);
@@ -11988,9 +11988,30 @@ td.comments, th.comments, td.address-review-list, th.address-review-list {
 }
 
 
+/*-------------------------CSS for Forgot and reset Password pages-------------------------------*/
 
 
 
+.user-container .form-group{
+	display: inline-block;
+	margin-bottom: 15px;
+	width: 95%;
+}
+
+.user-container .form-group input[type="email"], 
+.user-container .form-group input[type="password"] {
+    outline: none; /* Removes the default focus outline */
+    box-shadow: none;
+    border: 1px solid #ced4da;
+    
+}
+
+
+.user-container .password-alert{
+	margin-top: 15px;
+	width: 95%;
+    display: inline-block;
+}
 
 
 /*-------------------------CSS for Login page-------------------------------*/
@@ -12158,6 +12179,25 @@ td.comments, th.comments, td.address-review-list, th.address-review-list {
 .hide{
     position: absolute;
     transform: translateY(-300%);
+}
+
+.forgot-password-link {
+	margin-top: 10px;
+	font-size: 15px;
+	color: black;
+}
+.forgot-password-link a{
+	color: black;
+}
+
+.forgot-password-link a:link{
+	text-decoration: none;
+}
+
+.forgot-password-link a:hover{
+
+    color: #9191bd;
+
 }
 
 /*----------------------------Medias-----------------------------------*/

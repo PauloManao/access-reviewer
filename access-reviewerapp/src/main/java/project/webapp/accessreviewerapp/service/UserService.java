@@ -14,4 +14,8 @@ public interface UserService {
     UserDto findById(Long id);
     boolean emailExists(String email);
     void toggleEnabled(Long id);
+    User findByEmail(String email);
+    String createPasswordResetToken(User user);
+    boolean isResetTokenValid(String token);
+    void updatePassword(String token, String newPassword);
 }
