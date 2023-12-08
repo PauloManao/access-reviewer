@@ -11682,7 +11682,7 @@ td.comments, th.comments, td.address-review-list, th.address-review-list {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-image: url('image/office.png');
+    background-image: url('image/office.jpg');
     background-size: cover;
     flex-direction: column;
     min-height: 100vh;	
@@ -11820,7 +11820,7 @@ td.comments, th.comments, td.address-review-list, th.address-review-list {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-image: url('image/friends.png');
+    background-image: url('image/friends.jpg');
     background-size: cover;
     flex-direction: column;
     min-height: 100vh;
