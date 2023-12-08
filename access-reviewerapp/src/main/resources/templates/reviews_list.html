@@ -67,21 +67,21 @@
 						<td th:text="${review.username}"></td>
 			            <td class="comments" th:text="${review.comments}"></td>
 			            <td th:text="${review.reportCount}"></td>	
-        <td>
-            <span th:if="${review.enabled}" class="status-label status-enabled">
-                <i class="fas fa-check-circle"></i>Enabled
-            </span>
-            <span th:if="${!review.enabled}" class="status-label status-disabled">
-                <i class="fas fa-times-circle"></i> Disabled
-            </span>
-        </td>
-        <td>
-            <form th:action="@{/admin/reviews/{action}/{id}(action=${review.enabled} ? 'disable' : 'enable', id=${review.id})}" method="post">
-                <button type="submit" class="btn" th:classappend="${review.enabled} ? 'btn-danger' : 'btn-success'">
-                    <span th:text="${review.enabled} ? 'Disable' : 'Enable'"></span>
-                </button>
-            </form>
-        </td>
+				        <td>
+				            <span th:if="${review.enabled}" class="status-label status-enabled">
+				                <i class="fas fa-check-circle"></i>Enabled
+				            </span>
+				            <span th:if="${!review.enabled}" class="status-label status-disabled">
+				                <i class="fas fa-times-circle"></i> Disabled
+				            </span>
+				        </td>
+				        <td>
+				            <form th:action="@{/admin/reviews/{action}/{id}(action=${review.enabled} ? 'disable' : 'enable', id=${review.id})}" method="post">
+				                <button type="submit" class="btn" th:classappend="${review.enabled} ? 'btn-danger' : 'btn-success'">
+				                    <span th:text="${review.enabled} ? 'Disable' : 'Enable'"></span>
+				                </button>
+				            </form>
+				        </td>
 			        </tr>
 			    </tbody>
 			</table>

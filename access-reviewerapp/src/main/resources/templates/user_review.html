@@ -45,30 +45,21 @@
 			<table>
 			    <thead>
 			        <tr>
-
-			            <th>Submission Date</th>
-	
-			            <th class="address-review-list">Address</th>
-			    
+			            <th>Submission Date</th>	
+			            <th class="address-review-list">Address</th>			    
 			            <th class="comments">Comments</th>
-
 			            <th>Actions</th>
 			        </tr>
 			    </thead>
 			    <tbody>
-			        <tr th:each="review : ${reviews_list}">
-	
-			            <td th:text="${review.submissionDate}"></td>
-			           	                        
-						<td class="address-review-list" th:text="${review.addressString}"></td>	
-						
+			        <tr th:each="review : ${reviews_list}">	
+			            <td th:text="${review.submissionDate}"></td>			           	                        
+						<td class="address-review-list" th:text="${review.addressString}"></td>							
 			            <td class="comments" th:text="${review.comments}"></td>
-
 				        <td>
 				            <form th:action="@{/delete_review/{id}(id=${review.id})}" method="post">
 						        <button type="submit" class="btn btn-danger">Delete</button>
-						    </form>
-				     
+						    </form>				     
 				        </td>
 			        </tr>
 			    </tbody>

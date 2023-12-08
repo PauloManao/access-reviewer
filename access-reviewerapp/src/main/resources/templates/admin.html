@@ -42,7 +42,7 @@
 				<span th:if="${username}" th:text="${username}" th:href="@{/user}"></span>
 			</h3>
 			
-			<div class="user-options"><a th:href="@{/admin/users}" class="user-link">Users Management</a></div>
+			<div class="user-options"><a th:href="@{/admin/users}" class="user-link">User Management</a></div>
 			<div class="user-options"><a th:href="@{/admin/address_ratings}" class="user-link">Address Ratings</a></div>
 			
 			<span sec:authorize="isAuthenticated"></span>

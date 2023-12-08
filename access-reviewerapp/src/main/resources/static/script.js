@@ -50,17 +50,25 @@
         }
 
         // Enable pressing Enter to perform the search
-        document.getElementById('searchTbx').addEventListener('keydown', function(event) {
+        var searchTextBox = document.getElementById('searchTbx');
+    if (searchTextBox) {
+        searchTextBox.addEventListener('keydown', function(event) {
             if (event.key === 'Enter') {
                 event.preventDefault(); // Prevent the default form submission
                 geocodeAddress(); // Call the geocodeAddress function
             }
         });
+    }
 
         // Attach the click event to the search button
-        document.querySelector('.search-bar button').addEventListener('click', function() {
+    var searchButton = document.querySelector('.search-bar button');
+    if (searchButton) {
+        searchButton.addEventListener('click', function() {
             geocodeAddress();
         });
+    }
+        
+        
     });
 
 
@@ -99,34 +107,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 });
 
-
-/* 
-    News page
-*/
-
-const btnHam = document.querySelector('.ham-btn');
-const btnTimes = document.querySelector('.times-btn');
-const navBar = document.getElementById('nav-bar');
-
-if(btnHam){
-    btnHam.addEventListener('click', function(){
-        if(btnHam.className !== ""){
-            btnHam.style.display = "none";
-            btnTimes.style.display = "block";
-            navBar.classList.add("show-nav");
-        }
-    });
-}
-
-if(btnTimes){
-    btnTimes.addEventListener('click', function(){
-        if(btnHam.className !== ""){
-            this.style.display = "none";
-            btnHam.style.display = "block";
-            navBar.classList.remove("show-nav");
-        }
-    });
-}
 
 
 /* 
@@ -429,10 +409,14 @@ async function showSmallReportPopup(reviewId, reportIcon) {
 	}
 		
 		// Event listener for 'Write a Review' button
-			document.getElementById("writeReviewBtn").addEventListener('click', function() {
-			const addressText = document.getElementById("addressText").textContent;
-			navigateToReviewPage(addressText);
-		});
+			var writeReviewBtn = document.getElementById("writeReviewBtn");
+			
+			if (writeReviewBtn) {
+				document.getElementById("writeReviewBtn").addEventListener('click', function() {
+				const addressText = document.getElementById("addressText").textContent;
+				navigateToReviewPage(addressText);
+				});
+			}
 		
 		// Extract and use query parameters for weather and reviews fetching
 		const queryString = window.location.search;

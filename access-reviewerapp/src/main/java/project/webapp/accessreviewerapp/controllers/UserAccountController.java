@@ -25,7 +25,6 @@ public class UserAccountController {
     @Autowired
     private EmailService emailService;
 
-    
     @GetMapping("/forgot-password")
     public String showForgotPasswordForm() {
         return "forgot_password";

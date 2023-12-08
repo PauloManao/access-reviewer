@@ -40,11 +40,8 @@
 
 			<h3>Welcome, <br>
 				<span th:if="${username}" th:text="${username}" th:href="@{/user}"></span>
-			</h3>
-			
-			<div class="user-options"><a th:href="@{/user_reviews}" class="user-link">Your contributions</a></div><br>
-			
-		   
+			</h3>			
+			<div class="user-options"><a th:href="@{/user_reviews}" class="user-link">Your contributions</a></div><br>				   
 			<span sec:authorize="isAuthenticated"></span>
 			<div class="user-options"><a th:href="@{/logout}" class="user-link">Logout</a></div>
    		</div>
