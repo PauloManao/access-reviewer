@@ -10698,7 +10698,7 @@ p {
   text-transform: uppercase;
 }
 #mainNav .navbar-brand img {
-  height: 1.5rem;
+  height: 2.5rem;
 }
 #mainNav .navbar-nav .nav-item .nav-link {
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -10723,7 +10723,7 @@ p {
     transition: font-size 0.3s ease-in-out;
   }
   #mainNav .navbar-brand img {
-    height: 2rem;
+    height: 2.5rem;
     transition: height 0.3s ease-in-out;
   }
   
@@ -10743,7 +10743,7 @@ p {
   }
   #mainNav.navbar-shrink .navbar-brand svg,
   #mainNav.navbar-shrink .navbar-brand img {
-    height: 1.5rem;
+    height: 2rem;
   }
   #mainNav .navbar-nav .nav-item {
     margin-right: 1rem;
@@ -10757,7 +10757,7 @@ header.masthead {
   padding-bottom: 6rem;
   text-align: center;
   color: #fff;
-  background-image: url("../image/header-bg.jpg");
+  background-image: url("../image/header-bg.png");
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center center;
@@ -10795,7 +10795,7 @@ header.masthead .masthead-subheading {
 .search-bar{
  	width: 100%;
  	max-width: 700px;
- 	background: rgba(255, 255, 255, 0.2);
+ 	background: rgba(255, 255, 255, 0.6);
  	display: flex;
  	align-items: center;
  	justify-content: center;
@@ -10808,12 +10808,14 @@ header.masthead .masthead-subheading {
 .address-list{
  	width: 100%;
  	max-width: 700px;
- 	background: rgba(255, 255, 255, 0.2);
+ 	background: rgba(255, 255, 255, 0.6);
  	align-items: center;
  	justify-content: center;
  	border-radius: 60px;
  	padding: 10px 20px;
  	backdrop-filter: blur(4px) sature(180%);
+ 	color:black;
+ 	font-size: 15px;
  
 }
  
@@ -10824,11 +10826,11 @@ header.masthead .masthead-subheading {
 	outline: none;
 	padding: 24px 20px;
 	font-size: 20px;
-	color: #cac7ff;
+	color: black;
  }
  
  ::placeholder{
-	color: #cac7ff;
+	color: gray;
  }
  
  .search-bar button img{
@@ -11905,12 +11907,12 @@ td.comments, th.comments, td.address-review-list, th.address-review-list {
     background: #004494;
 }
 
-.add-user ::placeholder {
+.add-user ::placeholder, .filter ::placeholder {
   color: gray;
   opacity: 1; /* Firefox */
 }
 
-.add-user ::-ms-input-placeholder { /* Edge 12 -18 */
+.add-user ::-ms-input-placeholder, .filter ::-ms-input-placeholder { /* Edge 12 -18 */
   color: gray;
 }
 
@@ -11954,7 +11956,7 @@ td.comments, th.comments, td.address-review-list, th.address-review-list {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-image: url('image/login.png');
+    background-image: url('image/office.png');
     background-size: cover;
     flex-direction: column;
     min-height: 100vh;	
@@ -11972,6 +11974,77 @@ td.comments, th.comments, td.address-review-list, th.address-review-list {
     border-radius:20px;
    	background: rgba(255, 255, 255, 0.8);
  	backdrop-filter: blur(4px) sature(180%);	
+}
+
+.filter {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically by default */
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    padding: 15px;
+
+    width: 80%;
+    max-width: 900px;
+}
+
+.filter input[type="text"] {
+    width: 100%; /* Full width */
+    padding: 10px;
+    margin-bottom: 10px; /* Space between input and buttons */
+    border: 2px solid #DCDBDA;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.filter button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    width: 100%; /* Full width */
+    margin: 5px 0;
+    margin-bottom: 5px; /* Adds spacing below buttons */
+}
+
+.filter button:not(:last-child) {
+    margin-right: 15px; /* Add space between buttons */
+}
+
+.filter button:hover {
+    background-color: #0056b3;
+}
+
+.filter a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.filter a:hover {
+    text-decoration: underline;
+}
+
+@media screen and (min-width: 600px) {
+    .filter {
+        flex-direction: row; /* Place elements side by side on larger screens */
+        flex-wrap: wrap;
+        align-items: flex-start;
+    }
+
+    .filter input[type="text"] {
+        width: 70%; /* Adjusted width */
+        margin-bottom: 0; /* Remove bottom margin */
+        margin-right: 10px; /* Space between input and buttons */
+    }
+
+    .filter button {
+        width: auto; /* Auto width for buttons */
+        margin: 0; /* Remove margin */
+    }
 }
 
 .user-link {	
@@ -12021,7 +12094,7 @@ td.comments, th.comments, td.address-review-list, th.address-review-list {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-image: url('image/login.png');
+    background-image: url('image/friends.png');
     background-size: cover;
     flex-direction: column;
     min-height: 100vh;
@@ -12099,6 +12172,8 @@ td.comments, th.comments, td.address-review-list, th.address-review-list {
 
 }
 
+
+
 .form-information-children p{
     color: #555;
 }
@@ -12147,8 +12222,10 @@ td.comments, th.comments, td.address-review-list, th.address-review-list {
     color: #333;
 }
 
+
 .form label i{
     color: #a7a7a7;
+    
 }
 
 .form ::placeholder {
@@ -12196,7 +12273,7 @@ td.comments, th.comments, td.address-review-list, th.address-review-list {
 
 .forgot-password-link a:hover{
 
-    color: #9191bd;
+    color: blue;
 
 }
 

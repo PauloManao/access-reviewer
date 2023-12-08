@@ -81,6 +81,25 @@ public class UserServiceImpl implements UserService{
     }
     
     @Override
+    public List<UserDto> findByUsernameOrEmailContaining(String searchTerm) {
+        return userRepository.findByUsernameOrEmailContaining(searchTerm).stream()
+            .map(this::convertToDto)
+            .collect(Collectors.toList());
+    }
+
+    private UserDto convertToDto(User user) {
+        UserDto dto = new UserDto();
+        
+        dto.setId(user.getId());
+        dto.setEmail(user.getEmail());
+        dto.setUsername(user.getUsername());
+        dto.setRole(user.getRole());
+        dto.setEnabled(user.isEnabled());
+        
+        return dto;
+    }
+    
+    @Override
     public boolean emailExists(String email) {
         return userRepository.findByEmail(email) != null;
     }

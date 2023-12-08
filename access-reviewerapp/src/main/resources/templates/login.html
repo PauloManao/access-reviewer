@@ -113,10 +113,10 @@
                     
                     <!-- Reset Password messages -->
 					<div th:if="${param.error}">
-					    <div class="alert alert-danger" role="alert" th:text="${param.error}"></div>
+					    <div class="alert" role="alert" th:text="${param.error}"></div>
 					</div>
 					<div th:if="${param.message}">
-					    <div class="alert alert-success" role="alert" th:text="${param.message}"></div>
+					    <div class="alert" role="alert" th:text="${param.message}"></div>
 					</div>
 
                     <form class="form" id ="signin" th:action="@{/login}" method="post">

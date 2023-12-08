@@ -1,10 +1,15 @@
 package project.webapp.accessreviewerapp.service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.OptionalDouble;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.persistence.EntityNotFoundException;
+import project.webapp.accessreviewerapp.dto.AddressRatingDto;
 import project.webapp.accessreviewerapp.dto.ReviewDto;
 import project.webapp.accessreviewerapp.entities.Address;
 import project.webapp.accessreviewerapp.entities.Image;
@@ -248,6 +254,35 @@ public class ReviewService {
         review.toggleEnabled();
         reviewRepository.save(review);
     }
+    
+    //search review by address
+    public List<ReviewDto> searchReviewsByAddress(String searchTerm) {
+        return reviewRepository.findByAddressStringContaining(searchTerm).stream()
+            .map(review -> convertToDto(review))
+            .collect(Collectors.toList());
+    }
+
+    private ReviewDto convertToDto(Review review) {
+        ReviewDto dto = new ReviewDto();
+        dto.setId(review.getId());
+        if (review.getAddress() != null) {
+            dto.setAddressString(review.getAddress().getAddress());
+        }
+        dto.setRateExperience(review.getRateExperience());
+        dto.setEntrance(review.getEntrance());
+        dto.setAccessToServices(review.getAccessToServices());
+        dto.setSeatsTablesCounters(review.getSeatsTablesCounters());
+        dto.setRestRooms(review.getRestRooms());
+        dto.setComments(review.getComments());
+        dto.setSubmissionDate(review.getSubmissionDate());
+        dto.setEnabled(review.isEnabled());
+        if (review.getUser() != null) {
+            dto.setUsername(review.getUser().getUsername());
+        }
+        
+        return dto;
+    }
+    
 
     public List<ReviewDto> getEnabledCommentsByAddressId(Long addressId) {
         List<Review> enabledReviews = reviewRepository.findEnabledByAddressId(addressId);
@@ -286,5 +321,58 @@ public class ReviewService {
                 })
                 .collect(Collectors.toList());
     }
+    
+    //method for calculating average rates
+    public List<AddressRatingDto> getAddressRatings() {
+        List<Review> allReviews = reviewRepository.findAll();
+        
+        return allReviews.stream()
+            .collect(Collectors.groupingBy(review -> review.getAddress().getAddress()))
+            .entrySet().stream()
+            .map(entry -> {
+                String address = entry.getKey();
+                List<Review> reviews = entry.getValue();
+
+                double overallRate = calculateAverage(reviews.stream()
+                    .mapToDouble(review -> (review.getRateExperience() 
+                                            + review.getEntrance() 
+                                            + review.getAccessToServices() 
+                                            + review.getSeatsTablesCounters() 
+                                            + review.getRestRooms()) / 5.0));
+
+                double averageRateExperience = calculateAverage(reviews.stream().mapToDouble(Review::getRateExperience));
+                double averageEntrance = calculateAverage(reviews.stream().mapToDouble(Review::getEntrance));
+                double averageAccessToServices = calculateAverage(reviews.stream().mapToDouble(Review::getAccessToServices));
+                double averageSeatsTablesCounters = calculateAverage(reviews.stream().mapToDouble(Review::getSeatsTablesCounters));
+                double averageRestRooms = calculateAverage(reviews.stream().mapToDouble(Review::getRestRooms));
+
+                return new AddressRatingDto(address, overallRate, averageRateExperience, 
+                                            averageEntrance, averageAccessToServices, 
+                                            averageSeatsTablesCounters, averageRestRooms);
+            })
+            .sorted(Comparator.comparingDouble(AddressRatingDto::getOverallRate).reversed())
+            .collect(Collectors.toList());
+    }
+    
+    //limit the rates  to 3 decimal places
+    private double calculateAverage(DoubleStream doubleStream) {
+        OptionalDouble average = doubleStream.average();
+        return average.isPresent() ? BigDecimal.valueOf(average.getAsDouble())
+                                       .setScale(3, RoundingMode.HALF_UP)
+                                       .doubleValue() 
+                                   : 0.0;
+    }
+    
+    //search for address on address_ratings page 
+    public List<AddressRatingDto> searchAddressRatings(String searchTerm) {
+        // Fetch all ratings
+        List<AddressRatingDto> allRatings = getAddressRatings();
+
+        // Filter based on the search term
+        return allRatings.stream()
+                         .filter(rating -> rating.getAddress().toLowerCase().contains(searchTerm.toLowerCase()))
+                         .collect(Collectors.toList());
+    }
+
 
 }

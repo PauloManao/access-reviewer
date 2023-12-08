@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import project.webapp.accessreviewerapp.dto.UserDto;
@@ -133,11 +134,18 @@ public class UserController {
 	
 	
 	@GetMapping("/admin/users")
-	public String listUsers(Model model) {
-	    List<UserDto> users = userService.findAll();
-	    model.addAttribute("users", users);
-	    return "admin_users";
-	}
+    public String listUsers(@RequestParam(name = "searchTerm", required = false) String searchTerm, Model model) {
+        List<UserDto> users;
+        if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+            // Search for users
+            users = userService.findByUsernameOrEmailContaining(searchTerm);
+        } else {
+            // No search term provided, list all users
+            users = userService.findAll();
+        }
+        model.addAttribute("users", users);
+        return "admin_users";
+    }
 
 	@PostMapping("/admin/users")
 	public String addUser(@ModelAttribute("user") UserDto userDto, RedirectAttributes redirectAttributes) {

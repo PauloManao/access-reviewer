@@ -40,7 +40,11 @@
 			<h2>User Management</h2>		
 			<div class="admin-message" th:if="${adminMessage}" th:text="${adminMessage}"></div>
 		</div>
-			
+		<form class="filter" th:action="@{/admin/users}" method="get">
+		    <input type="text" name="searchTerm" placeholder="Search for an user">
+		    <button type="submit">Search</button>
+		    <a href="#" th:href="@{/admin/users}"><button type="button">Show All</button></a>
+		</form>	
 		<!-- List of Users -->
 		<div class="users-table">
 			<table >

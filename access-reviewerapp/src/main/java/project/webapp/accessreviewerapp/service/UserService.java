@@ -18,4 +18,5 @@ public interface UserService {
     String createPasswordResetToken(User user);
     boolean isResetTokenValid(String token);
     void updatePassword(String token, String newPassword);
+    List<UserDto> findByUsernameOrEmailContaining(String searchTerm);
 }

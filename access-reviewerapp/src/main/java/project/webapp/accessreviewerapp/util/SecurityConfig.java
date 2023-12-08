@@ -39,7 +39,8 @@ public class SecurityConfig {
 		http.csrf(c -> c.disable())
 		.authorizeHttpRequests(request -> request.requestMatchers("/admin-page", "/admin", "admin_user_edit", 
 				"admin_users", "/admin/users", "/admin/users/edit/*", "/admin/users/update/*", "/admin/users/delete/*",
-				"/admin/users/enable/*", "admin/users/disable/*")
+				"/admin/users/enable/*", "admin/users/disable/*","/admin/address_ratings", "address_ratings",
+				"/admin/address_ratings/search")
 				.hasAuthority("admin")
 				.requestMatchers("/reviewer", "/reviews_list",
 						"/admin/reviews/enable/*", "/admin/reviews/disable/*")

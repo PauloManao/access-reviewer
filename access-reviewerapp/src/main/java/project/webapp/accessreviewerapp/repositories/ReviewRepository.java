@@ -21,4 +21,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long>{
     List<Review> findEnabledByAddressId(@Param("addressId") Long addressId);
     
     List<Review> findByUserId(Long userId);
+    
+    // Method to find reviews by address string
+    @Query("SELECT r FROM Review r JOIN r.address a WHERE LOWER(a.address) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
+    List<Review> findByAddressStringContaining(@Param("searchTerm") String searchTerm);
 }

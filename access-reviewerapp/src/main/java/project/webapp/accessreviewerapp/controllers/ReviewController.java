@@ -22,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.persistence.EntityNotFoundException;
+import project.webapp.accessreviewerapp.dto.AddressRatingDto;
 import project.webapp.accessreviewerapp.dto.ReportReviewRequest;
 import project.webapp.accessreviewerapp.dto.ReviewDto;
 
@@ -122,8 +123,17 @@ public class ReviewController {
     
     //list reviews in the review management page
     @GetMapping("/reviews_list")
-    public String listReviews(Model model) {
-        List<ReviewDto> reviews = reviewService.findAll();
+    public String listReviews(@RequestParam(name = "searchTerm", required = false) String searchTerm, Model model) {
+        List<ReviewDto> reviews;
+
+        if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+            // Search for reviews by address
+            reviews = reviewService.searchReviewsByAddress(searchTerm);
+        } else {
+            // No search term provided, list all reviews
+            reviews = reviewService.findAll();
+        }
+
         model.addAttribute("reviews_list", reviews);
         return "reviews_list"; 
     }
@@ -202,6 +212,22 @@ public class ReviewController {
         }
 
         return "redirect:/user_reviews";
+    }
+    
+    //average rates
+    @GetMapping("/admin/address_ratings")
+    public String showAddressRatings(Model model) {
+        List<AddressRatingDto> addressRatings = reviewService.getAddressRatings();
+        model.addAttribute("addressRatings", addressRatings);
+        return "address_ratings"; 
+    }
+    
+    //search for address on address_ratings page 
+    @GetMapping("/admin/address_ratings/search")
+    public String searchAddressRatings(@RequestParam("searchTerm") String searchTerm, Model model) {
+        List<AddressRatingDto> filteredRatings = reviewService.searchAddressRatings(searchTerm);
+        model.addAttribute("addressRatings", filteredRatings);
+        return "address_ratings"; 
     }
         
 }

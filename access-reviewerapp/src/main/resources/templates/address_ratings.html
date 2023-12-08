@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Review Management</title>
+        <title>Address Ratings</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="" th:href="@{/image/favicon.ico}" />
         <!-- Font Awesome icons (free version)-->
@@ -37,53 +37,40 @@
         </nav>
 	<div class="admin-container">
 		<div class=admin-top>
-			<h2>Review Management</h2>			
-			<div class="reviewer-message" th:if="${reviewerMessage}" th:text="${reviewerMessage}"></div>
+			<h2>Address Ratings</h2>			
 		</div>
-		<form class="filter" >
+		
+		<form class="filter" action="#" th:action="@{/admin/address_ratings/search}" method="get">
 		    <input type="text" name="searchTerm" placeholder="Search for an address">
 		    <button type="submit">Search</button>
-		    <a href="#" th:href="@{/reviews_list}"><button type="button">Show All</button></a>
+		    <a href="#" th:href="@{/admin/address_ratings}"><button type="button">Show All</button></a>
 		</form>
+		
 		<div class="users-table">
-			<table>
-			    <thead>
-			        <tr>
-			            <th>ID</th>
-			            <th>Submission Date</th>
-			            <th class="address-review-list">Address</th>
-			            <th>Username</th>
-			            <th class="comments">Comments</th>
-			            <th>Reports Count</th>	
-			            <th>Status</th>
-			            <th>Actions</th>
-			        </tr>
-			    </thead>
-			    <tbody>
-			        <tr th:each="review : ${reviews_list}">
-			            <td th:text="${review.id}"></td>
-			            <td th:text="${review.submissionDate}"></td>		           	                        
-						<td class="address-review-list" th:text="${review.addressString}"></td>	
-						<td th:text="${review.username}"></td>
-			            <td class="comments" th:text="${review.comments}"></td>
-			            <td th:text="${review.reportCount}"></td>	
-        <td>
-            <span th:if="${review.enabled}" class="status-label status-enabled">
-                <i class="fas fa-check-circle"></i>Enabled
-            </span>
-            <span th:if="${!review.enabled}" class="status-label status-disabled">
-                <i class="fas fa-times-circle"></i> Disabled
-            </span>
-        </td>
-        <td>
-            <form th:action="@{/admin/reviews/{action}/{id}(action=${review.enabled} ? 'disable' : 'enable', id=${review.id})}" method="post">
-                <button type="submit" class="btn" th:classappend="${review.enabled} ? 'btn-danger' : 'btn-success'">
-                    <span th:text="${review.enabled} ? 'Disable' : 'Enable'"></span>
-                </button>
-            </form>
-        </td>
-			        </tr>
-			    </tbody>
+		   
+		    <table>
+		        <thead>
+		            <tr>
+		                <th>Address</th>
+		                <th>Overall Rate</th>
+		                <th>Average Rate Experience</th>
+		                <th>Average Entrance</th>
+		                <th>Average Access to Services</th>
+		                <th>Average Seats Tables Counters</th>
+		                <th>Average Rest Rooms</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <tr th:each="rating : ${addressRatings}">
+		                <td th:text="${rating.address}"></td>
+		                <td th:text="${rating.overallRate}"></td>
+		                <td th:text="${rating.averageRateExperience}"></td>
+		                <td th:text="${rating.averageEntrance}"></td>
+		                <td th:text="${rating.averageAccessToServices}"></td>
+		                <td th:text="${rating.averageSeatsTablesCounters}"></td>
+		                <td th:text="${rating.averageRestRooms}"></td>
+		            </tr>
+		        </tbody>
 			</table>
 		</div>
 	</div>
