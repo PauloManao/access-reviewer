@@ -13,6 +13,7 @@ public class EmailService {
 
     public void sendPasswordResetEmail(String to, String token) {
         String subject = "Password Reset Request";
+        //String resetUrl = "http://localhost:8080/reset-password?token=" + token;
         String resetUrl = "https://accessreviewer-c3dba0728822.herokuapp.com/reset-password?token=" + token;
         String text = "To reset your password, click the link below:\n" + resetUrl;
 
